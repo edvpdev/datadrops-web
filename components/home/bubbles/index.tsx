@@ -32,24 +32,6 @@ export default function Bubbles() {
       <div>
         <span className={styles.dot}></span>
       </div>
-      {/* <div>
-        <span className={styles.dot}></span>
-      </div>
-      <div>
-        <span className={styles.dot}></span>
-      </div>
-      <div>
-        <span className={styles.dot}></span>
-      </div>
-      <div>
-        <span className={styles.dot}></span>
-      </div>
-      <div>
-        <span className={styles.dot}></span>
-      </div>
-      <div>
-        <span className={styles.dot}></span>
-      </div> */}
     </div>
   );
 }
