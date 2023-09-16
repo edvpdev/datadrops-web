@@ -16,7 +16,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-[calc(100dvh)]">
       <body className={cn("", inter.className)}>
-        <Providers>{children}</Providers>
+        {/* <Providers>{children}</Providers> */}
+        {children}
       </body>
     </html>
   );

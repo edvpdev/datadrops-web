@@ -9,5 +9,5 @@ export default async function HomeMiddleware(req: NextRequest) {
   }
 
   console.log("here3");
-  return NextResponse.redirect(new URL(`/home`, req.url));
+  return NextResponse.rewrite(new URL(`/home`, req.url));
 }
