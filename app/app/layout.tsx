@@ -16,9 +16,19 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="auth flex min-h-screen h-screen w-screen">
-      <DashSidebar />
+      <Suspense
+        fallback={
+          <div className="h-full overflow-y-auto overflow-x-hidden rounded bg-gray-50 py-4 px-3 dark:bg-gray-800"></div>
+        }
+      >
+        <DashSidebar />
+      </Suspense>
+
       <div className="flex flex-col h-full w-full">
-        <DashNavbar />
+        <Suspense>
+          <DashNavbar />
+        </Suspense>
+
         <div className="">{children}</div>
       </div>
     </div>

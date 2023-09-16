@@ -14,24 +14,24 @@
     "@emotion/styled": "^11.11.0",
     "@types/node": "20.5.1",
     "@types/react": "18.2.20",
-    "daisyui": "^3.6.3",
     "@types/react-dom": "18.2.7",
+    "autoprefixer": "^10.4.15",
     "clsx": "^2.0.0",
+    "daisyui": "^3.6.3",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
     "flowbite": "^1.8.1",
     "flowbite-react": "^0.5.0",
     "framer-motion": "^10.16.1",
     "next": "13.4.19",
+    "postcss": "^8.4.29",
+    "postcss-import": "^15.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-error-boundary": "^4.0.11",
     "react-icons": "^4.10.1",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
-    "typescript": "5.1.6",
-    "autoprefixer": "^10.4.15",
-    "postcss": "^8.4.29",
-    "postcss-import": "^15.1.0"
-  },
-  "devDependencies": {}
+    "typescript": "5.1.6"
+  }
 }

@@ -3,7 +3,7 @@ import { IconType } from "react-icons/lib";
 import { CgDatabase } from "react-icons/cg";
 import { TbDeviceDesktopAnalytics } from "react-icons/tb";
 
-interface Route {
+export interface Route {
   icon?: IconType;
   name: string;
   path: string;

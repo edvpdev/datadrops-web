@@ -1,10 +1,16 @@
 "use client";
 
 import { Sidebar } from "flowbite-react";
-import { ROUTES } from "@/lib/constants/routes";
-import Link from "next/link";
+import { ROUTES, Route } from "@/lib/constants/routes";
+import { usePathname } from "next/navigation";
 
 export default function DashSidebar() {
+  const pathname = usePathname();
+
+  const isRouteActive = (route: Route) => {
+    return route.children!.some((child) => child.path === pathname);
+  };
+
   return (
     <Sidebar>
       <Sidebar.Logo
@@ -18,21 +24,30 @@ export default function DashSidebar() {
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           {ROUTES.map((route, indx) => (
-            <>
+            <div key={indx}>
               {route.children ? (
-                <Sidebar.Collapse icon={route.icon} label={route.name}>
+                <Sidebar.Collapse
+                  icon={route.icon}
+                  label={route.name}
+                  open={isRouteActive(route)}
+                >
                   {route.children.map((child, index) => (
-                    <Sidebar.Item key={index} href="#" icon={child.icon}>
-                      <Link href={child.path}>{child.name}</Link>
+                    <Sidebar.Item
+                      key={index}
+                      icon={child.icon}
+                      href={child.path}
+                      active={pathname === child.path}
+                    >
+                      {child.name}
                     </Sidebar.Item>
                   ))}
                 </Sidebar.Collapse>
               ) : (
-                <Sidebar.Item key={indx} href="#" icon={route.icon}>
-                  <Link href={route.path}>{route.name}</Link>
+                <Sidebar.Item icon={route.icon} href={route.path}>
+                  {route.name}
                 </Sidebar.Item>
               )}
-            </>
+            </div>
           ))}
         </Sidebar.ItemGroup>
       </Sidebar.Items>
