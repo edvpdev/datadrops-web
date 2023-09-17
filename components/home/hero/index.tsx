@@ -1,7 +1,8 @@
+"use client";
+
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 import { cn } from "@/lib/utils";
-import { SignedOut } from "@clerk/nextjs";
-import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 import Link from "next/link";
 
 export default function Hero({ className }: { className?: string }) {
@@ -9,9 +10,9 @@ export default function Hero({ className }: { className?: string }) {
     <MaxWidthWrapper>
       <div id="hero" className={cn("text-center", className)}>
         <div className="w-full flex justify-center">
-          <Image
+          <CldImage
             className="relative"
-            src="/logo1.png"
+            src="datadrops/logo1_y9dxau"
             alt="Datadrops Logo"
             width={240}
             height={54}
@@ -25,11 +26,9 @@ export default function Hero({ className }: { className?: string }) {
             Datadrops
           </span>
         </h1>
-        {/* <SignedOut> */}
         <button className="btn btn-primary btn-md sm:btn-lg border-0 text-white bg-gradient-to-r from-primary to-secondary transition-all duration-500 bg-size-200 bg-pos-0 hover:bg-pos-100">
           <Link href="/sign-in">Get Started</Link>
         </button>
-        {/* </SignedOut> */}
       </div>
     </MaxWidthWrapper>
   );

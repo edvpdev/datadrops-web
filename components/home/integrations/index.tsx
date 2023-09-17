@@ -3,7 +3,7 @@
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 import useMediaQuery from "@/lib/hooks/use-media-query";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 
 export default function Integrations({ className }: { className?: string }) {
   const { isMobile } = useMediaQuery();
@@ -25,41 +25,41 @@ export default function Integrations({ className }: { className?: string }) {
           id="images"
           className="w-full md:w-1/2 flex flex-wrap gap-x-16 gap-y-8 items-center justify-center px-12"
         >
-          <Image
+          <CldImage
             className="relative"
-            src="/gmail.png"
+            src="datadrops/gmail_qb5b6q"
             alt="Integrate with Gmail"
             width={isMobile ? 50 : 100}
             height={isMobile ? 50 : 100}
             priority
           />
-          <Image
+          <CldImage
             className="relative"
-            src="/facebook.png"
+            src="datadrops/facebook_wu5rpl"
             alt="Integrate with Facebook"
             width={isMobile ? 50 : 100}
             height={isMobile ? 50 : 100}
             priority
           />
-          <Image
+          <CldImage
             className="relative"
-            src="/spotify.png"
+            src="datadrops/spotify_frjig3"
             alt="Integrate with Spotify"
             width={isMobile ? 50 : 100}
             height={isMobile ? 50 : 100}
             priority
           />
-          <Image
+          <CldImage
             className="relative"
-            src="/ig.png"
+            src="datadrops/ig_k7axma"
             alt="Integrate with Instagram"
             width={isMobile ? 50 : 100}
             height={isMobile ? 50 : 100}
             priority
           />
-          <Image
+          <CldImage
             className="relative"
-            src="/github.png"
+            src="datadrops/github_u5r5zd"
             alt="Integrate with Instagram"
             width={isMobile ? 50 : 100}
             height={isMobile ? 50 : 100}
