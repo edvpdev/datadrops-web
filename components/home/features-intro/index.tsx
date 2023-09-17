@@ -1,13 +1,13 @@
 "use client";
 
 import type { CustomFlowbiteTheme } from "flowbite-react";
-import Image from "next/image";
 import { Carousel } from "flowbite-react";
 import { useState } from "react";
 import { IoAnalytics } from "react-icons/io5";
 import { SiSimpleanalytics } from "react-icons/si";
 import { TbReportAnalytics } from "react-icons/tb";
 import { cn } from "@/lib/utils";
+import { CldImage } from "next-cloudinary";
 
 enum Feature {
   INTEGRATIONS = "Integrations",
@@ -51,7 +51,7 @@ const featuresGallery = {
     images: [
       {
         alt: "Gmail",
-        src: "/gmail.png",
+        src: "datadrops/gmail_qb5b6q",
       },
       {
         alt: "Gmail",
@@ -129,7 +129,7 @@ export function FeaturesIntro() {
           <div className="h-[400px] max-h-[400px] max-w-[700px]">
             <Carousel theme={customTheme}>
               {featuresGallery[feature].images.map((img, indx) => (
-                <Image
+                <CldImage
                   key={indx}
                   alt={img.alt}
                   src={img.src}

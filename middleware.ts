@@ -20,6 +20,12 @@ export const config = {
 export default async function middleware(req: NextRequest, ev: NextFetchEvent) {
   const { domain, path, key } = parse(req);
   console.log("middleware", domain, path, key, req.url);
+  console.log(
+    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+  );
+  console.log("CLERK_SECRET_KEY", process.env.CLERK_SECRET_KEY);
+  console.log("NODE_ENV", process.env.NODE_ENV);
 
   // for App
   // if (APP_HOSTNAMES.has(domain)) {
