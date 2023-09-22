@@ -23,6 +23,7 @@ import { HOME_DOMAIN } from "../constants";
 // }
 
 export default authMiddleware({
+  debug: true,
   beforeAuth(req) {},
   afterAuth(auth, req, evt) {
     const { path, domain, referrer } = parse(req);

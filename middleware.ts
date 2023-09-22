@@ -28,10 +28,10 @@ export default async function middleware(req: NextRequest, ev: NextFetchEvent) {
   console.log("NODE_ENV", process.env.NODE_ENV);
 
   // for App
-  // if (APP_HOSTNAMES.has(domain)) {
-  //   console.log("isAppHost", domain, path, key, req.url);
-  //   return authMiddleware(req, ev);
-  // }
+  if (APP_HOSTNAMES.has(domain)) {
+    console.log("isAppHost", domain, path, key, req.url);
+    return authMiddleware(req, ev);
+  }
 
   // for root pages (e.g. dub.co, vercel.fyi, etc.)
   if (isHomeHostname(domain)) {

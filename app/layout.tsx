@@ -13,6 +13,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  console.log(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
   return (
     <html lang="en" className="h-[calc(100dvh)]">
       <body className={cn("", inter.className)}>
