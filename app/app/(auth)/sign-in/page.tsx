@@ -8,7 +8,7 @@ async function getProviders(): Promise<Provider> {
   console.log(`${HOME_DOMAIN}/api/auth/providers`);
   try {
     const { data } = await axios.get(
-      `${HOME_DOMAIN}/api/auth/providers`
+      `${process.env.NEXTAUTH_URL}/api/auth/providers`
     );
 
     return data;
