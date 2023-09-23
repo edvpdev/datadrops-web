@@ -4,11 +4,10 @@ import ProviderButton from '@/components/auth/ProviderButton';
 import { HOME_DOMAIN } from '@/lib/constants';
 
 async function getProviders(): Promise<Provider> {
+  console.log(`${HOME_DOMAIN}/api/auth/providers`);
   const res = await fetch(
-    `${HOME_DOMAIN}/api/auth/providers`
+    `http://127.0.0.1:3000/api/auth/providers`
   );
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
