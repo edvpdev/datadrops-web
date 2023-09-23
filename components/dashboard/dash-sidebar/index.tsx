@@ -1,26 +1,33 @@
-"use client";
+'use client';
 
-import { Sidebar } from "flowbite-react";
-import { ROUTES, Route } from "@/lib/constants/routes";
-import { usePathname } from "next/navigation";
+import { Sidebar } from 'flowbite-react';
+import { ROUTES, Route } from '@/lib/constants/routes';
+import { usePathname } from 'next/navigation';
+import ClientOnlyCldImage from '@/components/shared/ClientOnlyCldImage';
 
 export default function DashSidebar() {
   const pathname = usePathname();
 
   const isRouteActive = (route: Route) => {
-    return route.children!.some((child) => child.path === pathname);
+    return route.children!.some(
+      (child) => child.path === pathname
+    );
   };
 
   return (
     <Sidebar>
-      <Sidebar.Logo
-        className=""
-        href="#"
-        img="/logo1.png"
-        imgAlt="Datadrops logo"
-      >
-        <p>Datadrops</p>
-      </Sidebar.Logo>
+      <a href="#" className="mb-5 flex items-center pl-2.5">
+        <ClientOnlyCldImage
+          alt="Datadrops logo"
+          src="datadrops/logo1_y9dxau"
+          className="mr-3 h-6 sm:h-7"
+          width={50}
+          height={28}
+        />
+        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+          <p>Datadrops</p>
+        </span>
+      </a>
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           {ROUTES.map((route, indx) => (
@@ -29,21 +36,21 @@ export default function DashSidebar() {
                 <Sidebar.Collapse
                   icon={route.icon}
                   label={route.name}
-                  open={isRouteActive(route)}
-                >
+                  open={isRouteActive(route)}>
                   {route.children.map((child, index) => (
                     <Sidebar.Item
                       key={index}
                       icon={child.icon}
                       href={child.path}
-                      active={pathname === child.path}
-                    >
+                      active={pathname === child.path}>
                       {child.name}
                     </Sidebar.Item>
                   ))}
                 </Sidebar.Collapse>
               ) : (
-                <Sidebar.Item icon={route.icon} href={route.path}>
+                <Sidebar.Item
+                  icon={route.icon}
+                  href={route.path}>
                   {route.name}
                 </Sidebar.Item>
               )}

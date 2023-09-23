@@ -1,32 +1,35 @@
-"use client";
+import ClientOnlyCldImage from '@/components/shared/ClientOnlyCldImage';
+import MaxWidthWrapper from '@/components/shared/max-width-wrapper';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
-import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
-import { cn } from "@/lib/utils";
-import { CldImage } from "next-cloudinary";
-import Link from "next/link";
-
-export default function Hero({ className }: { className?: string }) {
+export default function Hero({
+  className
+}: {
+  className?: string;
+}) {
   return (
     <MaxWidthWrapper>
-      <div id="hero" className={cn("text-center", className)}>
-        <div className="w-full flex justify-center">
-          <CldImage
+      <div
+        id="hero"
+        className={cn('text-center', className)}>
+        <div className="flex w-full justify-center">
+          <ClientOnlyCldImage
             className="relative"
             src="datadrops/logo1_y9dxau"
             alt="Datadrops Logo"
             width={240}
             height={54}
-            priority
           />
         </div>
-        <h1 className="my-5 font-display text-2xl font-extrabold leading-[1.15] text-gray-600 sm:text-6xl sm:leading-[1.15]">
+        <h1 className="font-display my-5 text-2xl font-extrabold leading-[1.15] text-gray-600 sm:text-6xl sm:leading-[1.15]">
           Inspect Drops of Your Data With
           <br />
           <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
             Datadrops
           </span>
         </h1>
-        <button className="btn btn-primary btn-md sm:btn-lg border-0 text-white bg-gradient-to-r from-primary to-secondary transition-all duration-500 bg-size-200 bg-pos-0 hover:bg-pos-100">
+        <button className="btn btn-primary btn-md border-0 bg-gradient-to-r from-primary to-secondary bg-size-200 bg-pos-0 text-white transition-all duration-500 sm:btn-lg hover:bg-pos-100">
           <Link href="/sign-in">Get Started</Link>
         </button>
       </div>

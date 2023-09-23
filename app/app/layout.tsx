@@ -1,32 +1,35 @@
-import DashNavbar from "@/components/dashboard/dash-navbar";
-import DashSidebar from "@/components/dashboard/dash-sidebar";
-import { auth } from "@clerk/nextjs";
-import { ReactNode, Suspense } from "react";
+import getCurrentUser from '@/actions/getCurrentUser';
+import DashNavbar from '@/components/dashboard/dash-navbar';
+import DashSidebar from '@/components/dashboard/dash-sidebar';
+import { ReactNode, Suspense } from 'react';
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
-  const { userId }: { userId: string | null } = auth();
-
-  if (!userId) {
+export default async function DashboardLayout({
+  children
+}: {
+  children: ReactNode;
+}) {
+  const user = await getCurrentUser();
+  console.log(user);
+  if (user === null || !user.id) {
     return (
-      <div className="non-auth flex justify-center min-h-screen h-screen w-screen">
+      <div className="non-auth flex h-screen min-h-screen w-screen justify-center">
         {children}
       </div>
     );
   }
 
   return (
-    <div className="auth flex min-h-screen h-screen w-screen">
+    <div className="auth flex h-screen min-h-screen w-screen">
       <Suspense
         fallback={
-          <div className="h-full overflow-y-auto overflow-x-hidden rounded bg-gray-50 py-4 px-3 dark:bg-gray-800"></div>
-        }
-      >
+          <div className="h-full overflow-y-auto overflow-x-hidden rounded bg-gray-50 px-3 py-4 dark:bg-gray-800"></div>
+        }>
         <DashSidebar />
       </Suspense>
 
-      <div className="flex flex-col h-full w-full">
+      <div className="flex h-full w-full flex-col">
         <Suspense>
-          <DashNavbar />
+          <DashNavbar user={user} />
         </Suspense>
 
         <div className="">{children}</div>

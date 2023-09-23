@@ -1,20 +1,22 @@
-"use client";
+import ClientOnlyCldImage from '@/components/shared/ClientOnlyCldImage';
+import MaxWidthWrapper from '@/components/shared/max-width-wrapper';
+import { cn } from '@/lib/utils';
 
-import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
-import useMediaQuery from "@/lib/hooks/use-media-query";
-import { cn } from "@/lib/utils";
-import { CldImage } from "next-cloudinary";
-
-export default function Integrations({ className }: { className?: string }) {
-  const { isMobile } = useMediaQuery();
+export default function Integrations({
+  className
+}: {
+  className?: string;
+}) {
   return (
     <MaxWidthWrapper>
       <div
         id="integrations"
-        className={cn("flex flex-col md:flex-row-reverse", className)}
-      >
-        <div className="w-full md:w-1/2 md:flex md:items-center text-center mb-10">
-          <h2 className="my-5 font-display font-extrabold leading-[1.15] text-gray-600 text-2xl sm:text-4xl sm:leading-[1.15]">
+        className={cn(
+          'flex flex-col md:flex-row-reverse',
+          className
+        )}>
+        <div className="mb-10 w-full text-center md:flex md:w-1/2 md:items-center">
+          <h2 className="font-display my-5 text-2xl font-extrabold leading-[1.15] text-gray-600 sm:text-4xl sm:leading-[1.15]">
             <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Integrate&nbsp;
             </span>
@@ -23,47 +25,51 @@ export default function Integrations({ className }: { className?: string }) {
         </div>
         <div
           id="images"
-          className="w-full md:w-1/2 flex flex-wrap gap-x-16 gap-y-8 items-center justify-center px-12"
-        >
-          <CldImage
+          className="flex w-full flex-wrap items-center justify-center gap-x-16 gap-y-8 px-12 md:w-1/2">
+          <ClientOnlyCldImage
             className="relative"
             src="datadrops/gmail_qb5b6q"
             alt="Integrate with Gmail"
-            width={isMobile ? 50 : 100}
-            height={isMobile ? 50 : 100}
-            priority
+            width={100}
+            height={100}
+            mobileHeight={50}
+            mobileWidth={50}
           />
-          <CldImage
+          <ClientOnlyCldImage
             className="relative"
             src="datadrops/facebook_wu5rpl"
             alt="Integrate with Facebook"
-            width={isMobile ? 50 : 100}
-            height={isMobile ? 50 : 100}
-            priority
+            width={100}
+            height={100}
+            mobileHeight={50}
+            mobileWidth={50}
           />
-          <CldImage
+          <ClientOnlyCldImage
             className="relative"
             src="datadrops/spotify_frjig3"
             alt="Integrate with Spotify"
-            width={isMobile ? 50 : 100}
-            height={isMobile ? 50 : 100}
-            priority
+            width={100}
+            height={100}
+            mobileHeight={50}
+            mobileWidth={50}
           />
-          <CldImage
+          <ClientOnlyCldImage
             className="relative"
             src="datadrops/ig_k7axma"
             alt="Integrate with Instagram"
-            width={isMobile ? 50 : 100}
-            height={isMobile ? 50 : 100}
-            priority
+            width={100}
+            height={100}
+            mobileHeight={50}
+            mobileWidth={50}
           />
-          <CldImage
+          <ClientOnlyCldImage
             className="relative"
             src="datadrops/github_u5r5zd"
             alt="Integrate with Instagram"
-            width={isMobile ? 50 : 100}
-            height={isMobile ? 50 : 100}
-            priority
+            width={100}
+            height={100}
+            mobileHeight={50}
+            mobileWidth={50}
           />
         </div>
       </div>
