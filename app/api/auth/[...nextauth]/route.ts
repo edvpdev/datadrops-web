@@ -4,11 +4,11 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import prisma from '@/lib/prismadb';
 import Google from 'next-auth/providers/google';
 
-const useSecureCookies =
-  process.env.NODE_ENV === 'production';
-const hostName = new URL(
-  process.env.NEXT_PUBLIC_ROOT_DOMAIN!
-).hostname;
+// const useSecureCookies =
+//   process.env.NODE_ENV === 'production';
+// const hostName = new URL(
+//   process.env.NEXT_PUBLIC_ROOT_DOMAIN!
+// ).hostname;
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
