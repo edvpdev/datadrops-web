@@ -12,6 +12,7 @@ async function getProviders(): Promise<Provider> {
 
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
+    console.log(res);
     throw new Error('Failed to fetch data');
   }
 

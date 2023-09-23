@@ -15,12 +15,12 @@ export const APP_HOSTNAMES = new Set([
 ]);
 
 export const APP_DOMAIN =
-  process.env.NEXT_PUBLIC_ENV === 'production'
+  process.env.NODE_ENV === 'production'
     ? 'https://app.datadrops.io'
     : 'http://app.ldatadrops.io:3000';
 
 export const HOME_DOMAIN =
-  process.env.NEXT_PUBLIC_ENV === 'production'
+  process.env.NODE_ENV === 'production'
     ? 'https://datadrops.io'
     : 'http://ldatadrops.io:3000';
 
