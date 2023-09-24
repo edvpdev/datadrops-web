@@ -7,9 +7,7 @@ import axios from 'axios';
 async function getProviders(): Promise<Provider> {
   console.log(`${HOME_DOMAIN}/api/auth/providers`);
   try {
-    const { data } = await axios.get(
-      `${process.env.NEXTAUTH_URL}/api/auth/providers`
-    );
+    const { data } = await axios.get(`${HOME_DOMAIN}/api/auth/providers`);
 
     return data;
   } catch (err) {
@@ -34,10 +32,7 @@ export default async function SignIn() {
     <>
       {providers &&
         Object.values(providers).map((provider) => (
-          <ProviderButton
-            key={provider.name}
-            provider={provider}
-          />
+          <ProviderButton key={provider.name} provider={provider} />
         ))}
     </>
   );
