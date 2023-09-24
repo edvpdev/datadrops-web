@@ -1,3 +1,6 @@
+import { FcGoogle } from 'react-icons/fc';
+import { SafeProvider } from '../types';
+
 export const HOME_HOSTNAMES = new Set([
   'datadrops.io',
   'ldatadrops.io:3000',
@@ -34,3 +37,10 @@ export const SHOW_BACKGROUND_SEGMENTS = new Set([
   'register',
   'auth'
 ]);
+
+export const PROVIDERS: SafeProvider[] = [
+  {
+    id: 'google',
+    name: 'Google'
+  }
+];

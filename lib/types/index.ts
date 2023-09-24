@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+import { IconType } from 'react-icons/lib';
 
 export type SafeUser = Omit<
   User,
@@ -7,4 +8,9 @@ export type SafeUser = Omit<
   createdAt: string;
   emailVerified: string | null;
   updatedAt: string;
+};
+
+export type SafeProvider = {
+  name: string;
+  id: string;
 };
