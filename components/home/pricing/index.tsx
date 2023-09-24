@@ -1,6 +1,6 @@
-import PricingCard from "@/components/pricing-card/PricingCard";
-import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
-import { cn } from "@/lib/utils";
+import PricingCard from '@/components/pricing-card/PricingCard';
+import MaxWidthWrapper from '@/components/shared/max-width-wrapper';
+import { cn } from '@/lib/utils';
 
 export default function Pricing({ className }: { className?: string }) {
   return (
@@ -8,12 +8,11 @@ export default function Pricing({ className }: { className?: string }) {
       <div
         id="pricing"
         className={cn(
-          " bg-purple-glass backdrop-blur rounded-2xl p-6",
+          ' rounded-2xl bg-purple-glass p-6 backdrop-blur',
           className
-        )}
-      >
+        )}>
         <div className="xl:flex xl:flex-col xl:items-center">
-          <div className="flex flex-col items-center xl:mx-8 mb-12">
+          <div className="mb-12 flex flex-col items-center xl:mx-8">
             <h1 className="text-3xl font-medium capitalize text-gray-800 dark:text-white lg:text-4xl">
               Pricing
             </h1>
@@ -24,7 +23,7 @@ export default function Pricing({ className }: { className?: string }) {
               <span className="inline-block h-1 w-1 rounded-full bg-secondary"></span>
             </div>
 
-            <p className="mt-4 font-medium text-gray-500 dark:text-gray-300">
+            <p className="mt-4 font-medium text-gray-600 dark:text-gray-300">
               Support us by choosing a plan
             </p>
           </div>
@@ -36,11 +35,11 @@ export default function Pricing({ className }: { className?: string }) {
                 monthlyPrice={9}
                 yearlyPrice={99}
                 features={[
-                  "Up to 5GB of storage",
-                  "Custom querying availability",
-                  "Configurable data preservation",
-                  "API logs of up to 100 requests",
-                  "Email support",
+                  'Up to 5GB of storage',
+                  'Custom querying availability',
+                  'Configurable data preservation',
+                  'API logs of up to 100 requests',
+                  'Email support'
                 ]}
               />
 
@@ -49,13 +48,13 @@ export default function Pricing({ className }: { className?: string }) {
                 monthlyPrice={20.0}
                 yearlyPrice={200}
                 features={[
-                  "Up to 50GB of storage",
-                  "Custom querying availability",
-                  "Configurable data preservation",
-                  "API logs of up to 5000 requests/month",
-                  "Unlimited amount of Views and APIs",
-                  "Multi-region support for your APIs",
-                  "Email support",
+                  'Up to 50GB of storage',
+                  'Custom querying availability',
+                  'Configurable data preservation',
+                  'API logs of up to 5000 requests/month',
+                  'Unlimited amount of Views and APIs',
+                  'Multi-region support for your APIs',
+                  'Email support'
                 ]}
               />
             </div>

@@ -3,17 +3,11 @@ import MaxWidthWrapper from '@/components/shared/max-width-wrapper';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
-export default function Hero({
-  className
-}: {
-  className?: string;
-}) {
+export default function Hero({ className }: { className?: string }) {
   return (
     <MaxWidthWrapper>
-      <div
-        id="hero"
-        className={cn('text-center', className)}>
-        <div className="flex w-full justify-center">
+      <div id="hero" className={cn('text-center', className)}>
+        <div className="flex h-[143px] w-full justify-center">
           <ClientOnlyCldImage
             className="relative"
             src="datadrops/logo1_y9dxau"
