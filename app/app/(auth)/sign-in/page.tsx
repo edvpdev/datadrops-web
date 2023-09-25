@@ -19,7 +19,9 @@ import ProviderButton from '@/components/auth/ProviderButton';
 // }
 
 export default async function SignIn() {
+  console.log('in SignIn');
   const user = await getCurrentUser();
+  console.log('in SignIn 2');
   // If the user is already logged in, redirect.
   // Note: Make sure not to redirect to the same page
   // To avoid an infinite loop!
