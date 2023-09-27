@@ -26,7 +26,6 @@ export default async function getCurrentUser(): Promise<SafeUser | null> {
     console.log('in getCurrentUser 4');
     if (!currentUser) {
       return null;
-      3;
     }
 
     return {
