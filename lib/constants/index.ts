@@ -1,7 +1,7 @@
 export const HOME_HOSTNAMES = new Set([
   "datadrops.io",
   "localhost:3000",
-  "localhost",
+  "ldatadrops.io:3000",
 ]);
 
 export const isHomeHostname = (domain: string) => {
@@ -11,17 +11,18 @@ export const isHomeHostname = (domain: string) => {
 export const APP_HOSTNAMES = new Set([
   "app.datadrops.io",
   "app.localhost:3000",
+  "app.ldatadrops.io:3000",
 ]);
 
 export const APP_DOMAIN =
   process.env.NEXT_PUBLIC_ENV === "production"
-    ? "https://app.datadrops.io"
-    : "http://app.localhost:3000";
+    ? "https://app.ldatadrops.io:3000"
+    : "http://app.ldatadrops.io:3000";
 
 export const HOME_DOMAIN =
   process.env.NEXT_PUBLIC_ENV === "production"
-    ? "https://datadrops.io"
-    : "http://localhost:3000";
+    ? "https://ldatadrops.io:3000"
+    : "http://ldatadrops.io:3000";
 
 export const SHOW_BACKGROUND_SEGMENTS = new Set([
   "tools",

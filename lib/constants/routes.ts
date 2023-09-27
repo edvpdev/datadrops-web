@@ -14,45 +14,45 @@ export const ROUTES: Route[] = [
   {
     icon: IoAnalytics,
     name: "Integrations",
-    path: "/integrations/providers",
+    path: "/dashboard/integrations/providers",
     children: [
       {
         name: "Providers",
-        path: "/integrations/providers",
+        path: "/dashboard/integrations/providers",
       },
       {
         name: "Synchronizations",
-        path: "/integrations/synchronizations",
+        path: "/dashboard/integrations/synchronizations",
       },
       {
         name: "History",
-        path: "/integrations/history",
+        path: "/dashboard/integrations/history",
       },
     ],
   },
   {
     icon: CgDatabase,
     name: "Data Management",
-    path: "/data/query",
+    path: "/dashboard/data/query",
     children: [
       {
         name: "Query",
-        path: "/data/query",
+        path: "/dashboard/data/query",
       },
     ],
   },
   {
     icon: TbDeviceDesktopAnalytics,
     name: "Analytics",
-    path: "/analytics/views",
+    path: "/dashboard/analytics/views",
     children: [
       {
         name: "Views",
-        path: "/analytics/views",
+        path: "/dashboard/analytics/views",
       },
       {
         name: "Statistics",
-        path: "/analytics/statistics",
+        path: "/dashboard/analytics/statistics",
       },
     ],
   },

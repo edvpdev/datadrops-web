@@ -43,7 +43,11 @@ export default authMiddleware({
 
       return NextResponse.rewrite(
         new URL(
-          `/app${path === "/" ? "/integrations/providers" : path}`,
+          `/app${
+            path === "/" || path === "/dashboard"
+              ? "/dashboard/integrations/providers"
+              : path
+          }`,
           req.url
         )
       );
