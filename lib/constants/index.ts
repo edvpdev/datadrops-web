@@ -1,5 +1,8 @@
-import { FcGoogle } from 'react-icons/fc';
 import { SafeProvider } from '../types';
+import { PrismaAdapter } from '@auth/prisma-adapter';
+import { AuthOptions } from 'next-auth';
+import prisma from '@/lib/prismadb';
+import Google from 'next-auth/providers/google';
 
 export const HOME_HOSTNAMES = new Set([
   'datadrops.io',
@@ -44,3 +47,57 @@ export const PROVIDERS: SafeProvider[] = [
     name: 'Google'
   }
 ];
+
+export const authOptions: AuthOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_AUTH_CLIENT_ID || '',
+      clientSecret: process.env.GOOGLE_AUTH_SECRET || ''
+    })
+  ],
+  pages: {
+    signIn: '/app/sign-in'
+  },
+  debug: process.env.NODE_ENV === 'development',
+  session: {
+    strategy: 'jwt'
+  },
+  // callbacks: {
+  //   async redirect({ url, baseUrl }) {
+  //     console.log('callback');
+  //     console.log(url, baseUrl);
+  //     // // Allows relative callback URLs
+  //     // if (new URL(url).hostname === hostName) {
+  //     //   console.log(
+  //     //     'callback2',
+  //     //     new URL(url).hostname,
+  //     //     hostName
+  //     //   );
+  //     //   return Promise.resolve(url);
+  //     // }
+
+  //     // return Promise.resolve(new URL(url));
+
+  //     return url;
+  //   }
+  // },
+  // cookies: {
+  //   sessionToken: {
+  //     name: `${
+  //       useSecureCookies ? '__Secure-' : ''
+  //     }next-auth.session-token`,
+  //     options: {
+  //       httpOnly: true,
+  //       sameSite: 'lax',
+  //       path: '/',
+  //       domain:
+  //         hostName == 'ldatadrops.io'
+  //           ? 'ldatadrops.io:3000'
+  //           : '.ldatadrops.io:3000',
+  //       secure: useSecureCookies
+  //     }
+  //   }
+  // },
+  secret: process.env.NEXTAUTH_SECRET as string
+};
