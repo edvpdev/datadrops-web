@@ -27,7 +27,14 @@ export default async function authMiddleware(
     }
 
     return NextResponse.rewrite(
-      new URL(`/app${path === '/' ? '/integrations/providers' : path}`, req.url)
+      new URL(
+        `/app${
+          path === '/' || path === '/dashboard'
+            ? '/dashboard/integrations/providers'
+            : path
+        }`,
+        req.url
+      )
     );
   }
 }

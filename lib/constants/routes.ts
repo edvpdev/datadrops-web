@@ -1,7 +1,7 @@
-import { IoAnalytics } from "react-icons/io5";
-import { IconType } from "react-icons/lib";
-import { CgDatabase } from "react-icons/cg";
-import { TbDeviceDesktopAnalytics } from "react-icons/tb";
+import { IoAnalytics } from 'react-icons/io5';
+import { IconType } from 'react-icons/lib';
+import { CgDatabase } from 'react-icons/cg';
+import { TbDeviceDesktopAnalytics } from 'react-icons/tb';
 
 export interface Route {
   icon?: IconType;
@@ -13,47 +13,47 @@ export interface Route {
 export const ROUTES: Route[] = [
   {
     icon: IoAnalytics,
-    name: "Integrations",
-    path: "/integrations/providers",
+    name: 'Integrations',
+    path: '/dashboard/integrations/providers',
     children: [
       {
-        name: "Providers",
-        path: "/integrations/providers",
+        name: 'Providers',
+        path: '/dashboard/integrations/providers'
       },
       {
-        name: "Synchronizations",
-        path: "/integrations/synchronizations",
+        name: 'Synchronizations',
+        path: '/dashboard/integrations/synchronizations'
       },
       {
-        name: "History",
-        path: "/integrations/history",
-      },
-    ],
+        name: 'History',
+        path: '/dashboard/integrations/history'
+      }
+    ]
   },
   {
     icon: CgDatabase,
-    name: "Data Management",
-    path: "/data/query",
+    name: 'Data Management',
+    path: '/dashboard/data/query',
     children: [
       {
-        name: "Query",
-        path: "/data/query",
-      },
-    ],
+        name: 'Query',
+        path: '/dashboard/data/query'
+      }
+    ]
   },
   {
     icon: TbDeviceDesktopAnalytics,
-    name: "Analytics",
-    path: "/analytics/views",
+    name: 'Analytics',
+    path: '/dashboard/analytics/views',
     children: [
       {
-        name: "Views",
-        path: "/analytics/views",
+        name: 'Views',
+        path: '/dashboard/analytics/views'
       },
       {
-        name: "Statistics",
-        path: "/analytics/statistics",
-      },
-    ],
-  },
+        name: 'Statistics',
+        path: '/dashboard/analytics/statistics'
+      }
+    ]
+  }
 ];

@@ -2,16 +2,15 @@
 
 import { Sidebar } from 'flowbite-react';
 import { ROUTES, Route } from '@/lib/constants/routes';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import ClientOnlyCldImage from '@/components/shared/ClientOnlyCldImage';
 
 export default function DashSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const isRouteActive = (route: Route) => {
-    return route.children!.some(
-      (child) => child.path === pathname
-    );
+    return route.children!.some((child) => child.path === pathname);
   };
 
   return (
@@ -41,7 +40,7 @@ export default function DashSidebar() {
                     <Sidebar.Item
                       key={index}
                       icon={child.icon}
-                      href={child.path}
+                      onClick={() => router.push(child.path)}
                       active={pathname === child.path}>
                       {child.name}
                     </Sidebar.Item>
@@ -50,7 +49,7 @@ export default function DashSidebar() {
               ) : (
                 <Sidebar.Item
                   icon={route.icon}
-                  href={route.path}>
+                  onClick={() => router.push(route.path)}>
                   {route.name}
                 </Sidebar.Item>
               )}
