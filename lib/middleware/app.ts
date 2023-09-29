@@ -15,7 +15,7 @@ export default async function authMiddleware(
     secret: process.env.NEXTAUTH_SECRET
   });
   if (!session) {
-    console.log('here5', path);
+    console.log('here5 ', path);
     if (path !== '/sign-in' && path !== '/sign-up') {
       return NextResponse.redirect(new URL(`/sign-in`, req.url));
     }
