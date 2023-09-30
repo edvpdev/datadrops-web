@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server';
+import { PRIVATE_PAGES } from '../constants';
 
 export const parse = (req: NextRequest) => {
   let domain = req.headers.get('host') as string;
@@ -24,4 +25,9 @@ export const parse = (req: NextRequest) => {
 
 export const removeSubDomain = (domain: string) => {
   return domain.replace('www.', '').replace('app.', ''); // remove www. from domain
+};
+
+export const isPagePrivate = (url: string): boolean => {
+  console.log('isPagePrivate,', url);
+  return PRIVATE_PAGES.some((page) => url.includes(page));
 };
