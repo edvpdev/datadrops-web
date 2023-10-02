@@ -1,4 +1,5 @@
 import { SafeProvider } from '@/lib/types';
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   const response: SafeProvider[] = [
@@ -35,5 +36,5 @@ export async function GET() {
       ]
     }
   ];
-  return Response.json(response);
+  return NextResponse.json(response);
 }
