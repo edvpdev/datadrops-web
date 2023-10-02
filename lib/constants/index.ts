@@ -43,10 +43,10 @@ export const SHOW_BACKGROUND_SEGMENTS = new Set([
   'auth'
 ]);
 
-export const PROVIDERS: SafeProvider[] = [
+export const PROVIDERS: Pick<SafeProvider, 'title' | 'id'>[] = [
   {
     id: 'google',
-    name: 'Google'
+    title: 'Google'
   }
 ];
 

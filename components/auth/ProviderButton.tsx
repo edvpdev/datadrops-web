@@ -1,17 +1,13 @@
 'use client';
 
 import { SafeProvider } from '@/lib/types';
-import { Provider } from 'next-auth/providers/index';
 import { signIn } from 'next-auth/react';
-import { FcGoogle } from 'react-icons/fc';
+import { providerIcons } from '../shared/SocialIcons';
+import { APP_DOMAIN } from '@/lib/constants';
 
 interface ProviderButtonProps {
-  provider: SafeProvider;
+  provider: Pick<SafeProvider, 'title' | 'id'>;
 }
-
-const providerIcons: { [x: string]: React.ReactNode } = {
-  Google: <FcGoogle />
-};
 
 export default function ProviderButton({ provider }: ProviderButtonProps) {
   return (
@@ -20,11 +16,11 @@ export default function ProviderButton({ provider }: ProviderButtonProps) {
         className="btn"
         onClick={() =>
           signIn(provider.id, {
-            callbackUrl: 'http://app.localhost:3000'
+            callbackUrl: APP_DOMAIN
           })
         }>
-        {providerIcons[provider.name]}
-        Sign in with {provider.name}
+        {providerIcons[provider.title]}
+        Sign in with {provider.title}
       </div>
     </div>
   );

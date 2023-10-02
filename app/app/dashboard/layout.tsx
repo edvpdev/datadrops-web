@@ -12,7 +12,7 @@ export default async function DashboardLayout({
       <DashSidebar />
       <div className="flex h-full w-full flex-col">
         <DashNavbar />
-        <div className="">{children}</div>
+        <div className="w-[100% - 16rem]">{children}</div>
       </div>
     </>
   );
