@@ -10,32 +10,32 @@ export async function getSession() {
 }
 
 export default async function getCurrentUser(): Promise<SafeUser | null> {
-  try {
-    console.log('in getCurrentUser');
-    const session = await getServerSession(authOptions);
+  // try {
+  console.log('in getCurrentUser');
+  const session = await getServerSession(authOptions);
 
-    if (!session?.user?.email) {
-      return null;
-    }
-
-    const currentUser = await prisma.user.findUnique({
-      where: {
-        email: session.user.email
-      }
-    });
-
-    if (!currentUser) {
-      return null;
-    }
-
-    return {
-      ...currentUser,
-      createdAt: currentUser.createdAt.toISOString(),
-      updatedAt: currentUser.updatedAt.toISOString(),
-      emailVerified: currentUser.emailVerified?.toISOString() || null
-    };
-  } catch (error) {
-    console.log(error);
+  if (!session?.user?.email) {
     return null;
   }
+
+  const currentUser = await prisma.user.findUnique({
+    where: {
+      email: session.user.email
+    }
+  });
+
+  if (!currentUser) {
+    return null;
+  }
+
+  return {
+    ...currentUser,
+    createdAt: currentUser.createdAt.toISOString(),
+    updatedAt: currentUser.updatedAt.toISOString(),
+    emailVerified: currentUser.emailVerified?.toISOString() || null
+  };
+  // } catch (error) {
+  //   console.log(error);
+  //   return null;
+  // }
 }
