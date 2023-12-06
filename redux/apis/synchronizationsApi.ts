@@ -1,83 +1,40 @@
-import {
-  BaseQueryFn,
-  createApi,
-  FetchArgs,
-  fetchBaseQuery,
-  FetchBaseQueryError
-} from '@reduxjs/toolkit/query/react';
-//   import { setAuth } from '../slices';
-//   import { RootState } from '../store';
-import { Synchronization } from '@/lib/types';
+import { ICreateSynchronizationPayload, ISynchronization } from '@/lib/types';
+import { baseApi } from './baseApi';
+import { setSyncs } from 'redux/slices/synchronizationsSlice';
 
-// Define a service using a base URL and expected endpoints
-const baseQuery = fetchBaseQuery({
-  baseUrl: '/api/synchronizations'
-  // prepareHeaders: (headers, { getState }) => {
-  //   const authToken = (getState() as RootState).auth.user?.authToken;
-  //   const email = (getState() as RootState).auth.user?.email;
-
-  //   if (authToken) {
-  //     headers.set('authorization', `${authToken}`);
-  //     headers.set('account_type', `google`);
-  //   }
-
-  //   // used for refresh token
-  //   if (email) {
-  //     headers.set('email', `${email}`);
-  //   }
-
-  //   return headers;
-  // },
-});
-
-//   const baseQueryWithReauth: BaseQueryFn<
-//     string | FetchArgs,
-//     unknown,
-//     FetchBaseQueryError
-//   > = async (args, api, extraOptions) => {
-//     let result = await baseQuery(args, api, extraOptions);
-//     if (result.error && result.error.status === 401) {
-//       // try to get a new token
-//       const refreshResult = await baseQuery('/refresh-token', api, extraOptions);
-//       if (refreshResult.data) {
-//         // store the new token
-//         localStorage.setItem(
-//           'authToken',
-//           (refreshResult.data as IAccount).authToken
-//         );
-//         api.dispatch(setAuth(refreshResult.data as IAccount));
-//         // retry the initial query
-//         result = await baseQuery(args, api, extraOptions);
-//       } else {
-//         // logout
-//         localStorage.removeItem('authToken');
-//         api.dispatch(setAuth(undefined));
-//       }
-//     }
-//     return result;
-//   };
-
-export const synchronizationsApi = createApi({
-  reducerPath: 'synchronizationsApi',
-  baseQuery: baseQuery,
-  tagTypes: ['Synchronizations'],
+export const synchronizationsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getSynchronizations: builder.query<Synchronization[], void>({
-      query: () => `/`,
+    getSynchronizations: builder.query<ISynchronization[], string>({
+      query: (providers) => `/synchronizations?providers=${providers}`,
+      async onQueryStarted(x, { queryFulfilled, dispatch }) {
+        const { data } = await queryFulfilled;
+        console.log('syncs fullfilled', data);
+        dispatch(setSyncs(data));
+      },
       providesTags: (result) =>
         result
-          ? [
-              ...result.map(
-                ({ _id }) => ({ type: 'Synchronizations', id: _id }) as const
-              ),
-              { type: 'Synchronizations', id: 'LIST' }
-            ]
+          ? [{ type: 'Synchronizations', id: 'LIST' }]
           : // an error occurred, but we still want to refetch this query when `{ type: 'Posts', id: 'LIST' }` is invalidated
             [{ type: 'Synchronizations', id: 'LIST' }]
+    }),
+    runSynchronization: builder.mutation<
+      ISynchronization,
+      ICreateSynchronizationPayload
+    >({
+      query: (body: ICreateSynchronizationPayload) => {
+        return {
+          url: `/synchronizations`,
+          method: 'POST',
+          body
+        };
+      },
+      invalidatesTags: [{ type: 'Synchronizations', id: 'LIST' }]
     })
-  })
+  }),
+  overrideExisting: false
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetSynchronizationsQuery } = synchronizationsApi;
+export const { useGetSynchronizationsQuery, useRunSynchronizationMutation } =
+  synchronizationsApi;

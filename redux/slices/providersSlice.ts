@@ -1,19 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { IProvider } from '@/lib/types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface ProvidersState {
-  data: [];
+  data: IProvider[];
 }
 
 const initialState: ProvidersState = {
   data: []
 };
 
-export const providersSlice = createSlice({
-  name: 'providers',
+export const userProvidersSlice = createSlice({
+  name: 'userProviders',
   initialState,
   reducers: {
-    setProviders: (state) => {
-      state.data = state.data;
+    setUserProviders: (state, action: PayloadAction<IProvider[]>) => {
+      console.log('setUserProviders', action.payload);
+      state.data = [...action.payload];
     },
     clearProviders: (state) => {
       state.data = [];
@@ -21,5 +23,5 @@ export const providersSlice = createSlice({
   }
 });
 
-export const { setProviders, clearProviders } = providersSlice.actions;
-export const providersReducer = providersSlice.reducer;
+export const { setUserProviders, clearProviders } = userProvidersSlice.actions;
+export const userProvidersReducer = userProvidersSlice.reducer;

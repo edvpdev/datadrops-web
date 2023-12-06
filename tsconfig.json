@@ -21,7 +21,7 @@
     ],
     "paths": {
       "@/actions/*": ["app/actions/*"],
-      "@/components/*": ["components/*"],
+      "@/components/*": ["features/*"],
       "@/pages/*": ["pages/*"],
       "@/app/*": ["app/*"],
       "@/styles/*": ["styles/*"],

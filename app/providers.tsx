@@ -1,6 +1,5 @@
 'use client';
 
-import ClientOnly from '@/components/shared/ClientOnly';
 import { isPagePrivate } from '@/lib/middleware/utils';
 import { Analytics } from '@vercel/analytics/react';
 

@@ -1,40 +1,45 @@
-import { Synchronization } from '@/lib/types';
-import { NextResponse } from 'next/server';
+import getCurrentUser from '@/actions/getCurrentUser';
+import { agent } from '@/lib/api';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
-  const response: Synchronization[] = [
+export async function GET(request: NextRequest) {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    return NextResponse.error();
+  }
+
+  const searchParams = request.nextUrl.searchParams;
+  const providers = searchParams.get('providers') || '';
+  if (!providers) {
+    return NextResponse.json([]);
+  }
+
+  console.log(searchParams);
+  console.log('in api/synchronizations/route.ts', providers);
+
+  const response = await agent.Synchronizations.getAllSynchronizationsForUser(
     {
-      _id: '1',
-      providerID: 'google',
-      providerTitle: 'Google',
-      syncedEntities: [
-        {
-          title: 'Gmail Labels',
-          id: 'gmail-labels',
-          isLoaded: true,
-          isLoading: true
-        },
-        {
-          title: 'Gmail Emails',
-          id: 'gmail-emails',
-          isLoaded: true,
-          isLoading: false
-        }
-      ]
+      id: currentUser.id!
     },
+    providers
+  );
+  return NextResponse.json(response);
+}
+
+export async function POST(request: NextRequest) {
+  const currentUser = await getCurrentUser();
+  if (!currentUser) {
+    return NextResponse.error();
+  }
+
+  const body = await request.json();
+  console.log(body);
+
+  const response = await agent.Synchronizations.runSynchronization(
     {
-      _id: '2',
-      providerID: 'github',
-      providerTitle: 'Github',
-      syncedEntities: [
-        {
-          title: 'Repositories',
-          id: 'gh-repositories',
-          isLoaded: false,
-          isLoading: true
-        }
-      ]
-    }
-  ];
+      id: currentUser.id!
+    },
+    body
+  );
   return NextResponse.json(response);
 }

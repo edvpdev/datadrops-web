@@ -1,9 +1,9 @@
-import FAQ from '@/components/home/faq';
-import Features from '@/components/home/features';
-import Hero from '@/components/home/hero';
-import Integrations from '@/components/home/integrations';
-import Pricing from '@/components/home/pricing';
-import StatsSection from '@/components/home/stats';
+import FAQ from 'features/home/faq';
+import Features from 'features/home/features';
+import Hero from 'features/home/hero';
+import Integrations from 'features/home/integrations';
+import Pricing from 'features/home/pricing';
+import StatsSection from 'features/home/stats';
 
 export default function Home() {
   return (

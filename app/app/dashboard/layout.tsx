@@ -1,5 +1,6 @@
-import DashNavbar from '@/components/dashboard/dash-navbar';
-import DashSidebar from '@/components/dashboard/dash-sidebar';
+import DashNavbar from 'features/dashboard/dash-navbar';
+import DashSidebar from 'features/dashboard/dash-sidebar';
+import { IntegrationsWrapper } from 'features/dashboard/integrations';
 import { ReactNode } from 'react';
 
 export default async function DashboardLayout({
@@ -12,7 +13,9 @@ export default async function DashboardLayout({
       <DashSidebar />
       <div className="flex h-full w-full flex-col">
         <DashNavbar />
-        <div className="w-[100% - 16rem]">{children}</div>
+        <div className="w-[100% - 16rem]">
+          <IntegrationsWrapper>{children}</IntegrationsWrapper>
+        </div>
       </div>
     </>
   );
