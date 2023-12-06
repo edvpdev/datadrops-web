@@ -1,3 +1,12 @@
-import { setProviders, clearProviders } from './providersSlice';
+import { setUserProviders, clearProviders } from './providersSlice';
+import { setSyncs } from './synchronizationsSlice';
+import { setSyncsOverview } from './syncsOverviewSlice';
+import { setUserEntities } from './entitiesSlice';
 
-export { setProviders, clearProviders };
+export {
+  setUserProviders,
+  clearProviders,
+  setSyncs,
+  setSyncsOverview,
+  setUserEntities
+};

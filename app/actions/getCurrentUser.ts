@@ -18,14 +18,12 @@ export default async function getCurrentUser(): Promise<SafeUser | null> {
       return null;
     }
 
-    console.log('in getCurrentUser 2');
     const currentUser = await prisma.user.findUnique({
       where: {
         email: session.user.email
       }
     });
 
-    console.log('in getCurrentUser 4');
     if (!currentUser) {
       return null;
     }

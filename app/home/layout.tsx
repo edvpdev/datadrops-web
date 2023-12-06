@@ -1,8 +1,8 @@
-import Footer from "@/components/footer";
-import Background from "@/components/home/background";
-import Bubbles from "@/components/home/bubbles";
-import NavBar from "@/components/home/navbar/Navbar";
-import { ReactNode } from "react";
+import Footer from '@/components/home/footer';
+import Background from 'features/home/background';
+import Bubbles from 'features/home/bubbles';
+import NavBar from 'features/home/navbar/Navbar';
+import { ReactNode } from 'react';
 
 export default function MarketingLayout({ children }: { children: ReactNode }) {
   return (

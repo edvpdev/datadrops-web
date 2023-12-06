@@ -1,31 +1,23 @@
 import rootReducer from './reducer';
 import { configureStore } from '@reduxjs/toolkit';
+import { createEpicMiddleware } from 'redux-observable';
 
 import logger from 'redux-logger';
-import { providersApi } from './apis/providersApi';
-import { synchronizationsApi } from './apis/synchronizationsApi';
-// import { qrApi } from './apis/qrApi';
-// import { authApi } from './apis/authApi';
-// import { accountApi } from './apis/accountsApi';
-// import { chatApi } from './apis/chatApi';
-// import { qrHistoryApi } from './apis/qrHistory';
+import { baseApi } from './apis/baseApi';
+import { rootEpic } from './epics/root';
+
+const epicMiddleware = createEpicMiddleware();
 
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false
-    }).concat([
-      providersApi.middleware,
-      synchronizationsApi.middleware,
-      //   authApi.middleware,
-      //   accountApi.middleware,
-      //   chatApi.middleware,
-      //   qrHistoryApi.middleware,
-      logger
-    ])
+    }).concat([baseApi.middleware, epicMiddleware, logger])
   // TODO: remove logger in production
 });
+
+epicMiddleware.run(rootEpic);
 
 export type RootState = ReturnType<typeof store.getState>;
 

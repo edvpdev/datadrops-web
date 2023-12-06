@@ -1,7 +1,7 @@
 'use client';
 
 import { PROVIDERS } from '@/lib/constants';
-import ProviderButton from '@/components/auth/ProviderButton';
+import ProviderButton from 'features/auth/ProviderButton';
 import { useSession } from 'next-auth/react';
 
 export default function SignIn() {
@@ -10,7 +10,7 @@ export default function SignIn() {
     return (
       <>
         {PROVIDERS.map((provider) => (
-          <ProviderButton key={provider.id} provider={provider} />
+          <ProviderButton key={provider._id} provider={provider} />
         ))}
       </>
     );
