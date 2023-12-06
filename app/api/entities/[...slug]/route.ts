@@ -20,22 +20,22 @@ export async function GET(
   const { slug } = params;
   const [path, provider, entityLabel] = slug;
 
-  try {
-    switch (path) {
-      case 'mini':
-        const response = await agent.Entities.getEntitiesMinified(
-          {
-            id: currentUser.id!
-          },
-          provider,
-          entityLabel,
-          '5'
-        );
-        return NextResponse.json(response);
-    }
-    return NextResponse.json([]);
-  } catch (error) {
-    console.log(error);
-    return NextResponse.error();
+  // try {
+  switch (path) {
+    case 'mini':
+      const response = await agent.Entities.getEntitiesMinified(
+        {
+          id: currentUser.id!
+        },
+        provider,
+        entityLabel,
+        '5'
+      );
+      return NextResponse.json(response);
   }
+  return NextResponse.json([]);
+  // } catch (error) {
+  //   console.log(error);
+  //   return NextResponse.error();
+  // }
 }
