@@ -28,12 +28,9 @@ export default function CustomSelect(props: Props) {
         options={props.options}
         // defaultValue={''}
         onChange={(e, d) => {
-          console.log(e);
           if (e && e.value) {
-            console.log(e);
             props.onChange(e);
           } else {
-            console.log(e);
             props.onChange(e);
           }
         }}

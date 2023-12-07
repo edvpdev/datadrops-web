@@ -1,45 +1,53 @@
+import { customLog } from '@/actions/customLog.action';
 import getCurrentUser from '@/actions/getCurrentUser';
 import { agent } from '@/lib/api';
+import { AxiomRequest, withAxiom } from 'next-axiom';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
-  const currentUser = await getCurrentUser();
-  if (!currentUser) {
+export const GET = async (request: NextRequest) => {
+  try {
+    const currentUser = await getCurrentUser();
+    if (!currentUser) {
+      return NextResponse.error();
+    }
+
+    const searchParams = request.nextUrl.searchParams;
+    const providers = searchParams.get('providers') || '';
+    if (!providers) {
+      return NextResponse.json([]);
+    }
+
+    const response = await agent.Synchronizations.getAllSynchronizationsForUser(
+      {
+        id: currentUser.id!
+      },
+      providers
+    );
+    return NextResponse.json(response);
+  } catch (error) {
+    customLog.error('Error in POST /api/synchronizations', error as any);
     return NextResponse.error();
   }
+};
 
-  const searchParams = request.nextUrl.searchParams;
-  const providers = searchParams.get('providers') || '';
-  if (!providers) {
-    return NextResponse.json([]);
-  }
+export const POST = async (request: NextRequest) => {
+  try {
+    const currentUser = await getCurrentUser();
+    if (!currentUser) {
+      return NextResponse.error();
+    }
 
-  console.log(searchParams);
-  console.log('in api/synchronizations/route.ts', providers);
+    const body = await request.json();
 
-  const response = await agent.Synchronizations.getAllSynchronizationsForUser(
-    {
-      id: currentUser.id!
-    },
-    providers
-  );
-  return NextResponse.json(response);
-}
-
-export async function POST(request: NextRequest) {
-  const currentUser = await getCurrentUser();
-  if (!currentUser) {
+    const response = await agent.Synchronizations.runSynchronization(
+      {
+        id: currentUser.id!
+      },
+      body
+    );
+    return NextResponse.json(response);
+  } catch (error) {
+    customLog.error('Error in POST /api/synchronizations', error as any);
     return NextResponse.error();
   }
-
-  const body = await request.json();
-  console.log(body);
-
-  const response = await agent.Synchronizations.runSynchronization(
-    {
-      id: currentUser.id!
-    },
-    body
-  );
-  return NextResponse.json(response);
-}
+};

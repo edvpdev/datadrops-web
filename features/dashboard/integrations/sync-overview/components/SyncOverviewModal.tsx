@@ -14,6 +14,7 @@ import { Toasty } from '@/lib/components';
 import toast from 'react-hot-toast';
 import { RootState } from 'redux/store';
 import SyncOvContext from '../context/syncOverview.context';
+import { useCustomLog } from '@/lib/hooks';
 
 interface SyncOverviewModalProps {
   historyMode?: boolean;
@@ -37,14 +38,7 @@ const SyncOverviewModal = memo(function DefaultModal({
     closeModalFn,
     isSyncOvModalOpen
   } = useContext(SyncOvContext);
-
-  console.log(
-    syncOverviewInViewID,
-    entityInViewID,
-    providerKeyInView,
-    closeModalFn,
-    isSyncOvModalOpen
-  );
+  const customLog = useCustomLog();
 
   const [runSynchronization, { isLoading: isSyncing }] =
     useRunSynchronizationMutation();
@@ -64,14 +58,8 @@ const SyncOverviewModal = memo(function DefaultModal({
 
   const syncFn = useCallback(
     async (entity: IProviderEntity | undefined, syncSettings: IFormInputs) => {
-      console.log('sync', entity);
       if (!entity || !providerKeyInView) return;
 
-      //   console.log({
-      //     providerId: providerKeyInView,
-      //     entityLabel: entity.id,
-      //     ...syncSettings
-      //   });
       await runSynchronization({
         providerId: providerKeyInView,
         entityLabel: entity.id,
@@ -79,19 +67,20 @@ const SyncOverviewModal = memo(function DefaultModal({
       })
         .unwrap()
         .then((res) => {
-          //   console.log(res);
+          customLog.info('Sync created successfully', res);
           toast.custom((t) => (
             <Toasty t={t} type="success" message="Synced successfully" />
           ));
           closeModalFn();
         })
         .catch((err) => {
+          customLog.error('Error while creating sync', { msg: err.message });
           toast.custom((t) => (
             <Toasty t={t} type="error" message="Synced unsuccessfully" />
           ));
         });
     },
-    [runSynchronization, providerKeyInView, closeModalFn]
+    [runSynchronization, providerKeyInView, closeModalFn, customLog]
   );
 
   if (!entity) return null;
@@ -121,10 +110,6 @@ const SyncOverviewModal = memo(function DefaultModal({
               lastStatus={sync?.status || ''}
               isLoading={isSyncing}
               onClick={() => {
-                // // console.log(syncSettings);
-                // console.log(formRef.current?.getFormState());
-                // console.log(formRef.current?.validateForm());
-                // console.log(formRef.current?.getFormErrors());
                 const validation = formRef.current?.validateForm();
 
                 if (validation && Object.values(validation).length > 0) return;

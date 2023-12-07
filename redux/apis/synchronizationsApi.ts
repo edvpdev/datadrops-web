@@ -8,7 +8,6 @@ export const synchronizationsApi = baseApi.injectEndpoints({
       query: (providers) => `/synchronizations?providers=${providers}`,
       async onQueryStarted(x, { queryFulfilled, dispatch }) {
         const { data } = await queryFulfilled;
-        console.log('syncs fullfilled', data);
         dispatch(setSyncs(data));
       },
       providesTags: (result) =>

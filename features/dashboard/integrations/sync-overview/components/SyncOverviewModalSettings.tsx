@@ -33,8 +33,6 @@ const SyncOverviewSettings = React.forwardRef<any, SyncOverviewSettingsProps>(
 
     const entities = useSelector((state: RootState) => state.userEntities.data);
 
-    console.log('rerender', entity);
-
     let generalSettingsSchema: IProviderEntityDepSettings[] = [
       {
         id: 'overwrite',
@@ -84,7 +82,6 @@ const SyncOverviewSettings = React.forwardRef<any, SyncOverviewSettingsProps>(
       <button
         className="btn btn-md h-[42px] min-h-[42px]"
         onClick={() => {
-          console.log('help');
           setOpenModal(true);
           setEntitySettingInView(settings);
           setDependencySettingsInView(dependency);
@@ -120,7 +117,6 @@ const SyncOverviewSettings = React.forwardRef<any, SyncOverviewSettingsProps>(
         })
         .filter((dep) => !!dep) as DependencySettingWithHelpButton[];
     }, [entity.dependsOn, entities, readonly]);
-    console.log(res);
 
     generalSettingsSchema = generalSettingsSchema.map((setting) => ({
       ...setting,

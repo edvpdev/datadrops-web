@@ -30,9 +30,6 @@ export const syncOverviewEpic = (action$: Observable<Action>) =>
     )
   ]).pipe(
     switchMap(([providers, syncs]) => {
-      console.log('in epic');
-      console.log('providers', providers);
-      console.log('syncs', syncs);
       const syncsOverview: SynchronizationsOverview = {};
       // sort syncs by updated_at
       const sortedSyncs = [...syncs.payload].sort((a, b) => {

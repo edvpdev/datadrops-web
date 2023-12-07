@@ -11,7 +11,7 @@ export async function getSession() {
 
 export default async function getCurrentUser(): Promise<SafeUser | null> {
   // try {
-  console.log('in getCurrentUser');
+  // console.log('in getCurrentUser');
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {

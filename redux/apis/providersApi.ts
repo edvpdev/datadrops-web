@@ -5,10 +5,9 @@ import { setUserProviders } from 'redux/slices';
 export const providersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getProviders: builder.query<IProviderWithStatus[], void>({
-      query: () => `/providers`,
+      query: () => `/providerss`,
       async onQueryStarted(x, { queryFulfilled, dispatch }) {
         const { data } = await queryFulfilled;
-        console.log('onCacheEntryAdded', data);
         const providersInUse = data
           .filter((provider) => provider.isBlocked)
           .map((provider) => {
@@ -17,7 +16,8 @@ export const providersApi = baseApi.injectEndpoints({
               title: provider.title,
               description: provider.description,
               _id: provider._id,
-              entities: [...provider.entities]
+              entities: [...provider.entities],
+              isBlocked: provider.isBlocked
             };
           });
         dispatch(setUserProviders(providersInUse));

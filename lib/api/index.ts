@@ -111,7 +111,6 @@ const Synchronizations = {
     user: AxiosUserCredentials,
     providers: string
   ) => {
-    console.log('in getAllSynchronizationsForUser', providers);
     return requests.get<SynchronizationsOverview>(
       `/integrations/synchronizations?providers=${providers}`,
       user
@@ -121,7 +120,6 @@ const Synchronizations = {
     user: AxiosUserCredentials,
     payload: ICreateSynchronizationPayload
   ) => {
-    console.log('in runSynchronization', payload);
     return requests.post<ISynchronization>(
       `/integrations/synchronizations`,
       user,
@@ -138,7 +136,6 @@ const Synchronizations = {
 
 const Providers = {
   getAllProviders: (user: AxiosUserCredentials) => {
-    console.log('in getAllProviders');
     return requests.get<IProviderWithStatus[]>('/integrations/providers', user);
   }
 };
@@ -150,7 +147,6 @@ const Entities = {
     entityLabel: string,
     limit: string
   ) => {
-    console.log('in getEntities');
     return requests.get<IProviderWithStatus[]>(
       `/integrations/entities/mini/${provider}/${entityLabel}?limit=${limit}`,
       user

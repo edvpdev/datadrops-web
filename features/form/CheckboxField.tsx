@@ -14,23 +14,16 @@ interface CheckboxFieldProps {
 }
 
 //eslint-disable-next-line react/display-name
-const CheckboxField = memo(
-  ({ fieldSettings }: CheckboxFieldProps) => {
-    const { propKey, label, isChecked, disabled } = fieldSettings;
-    return (
-      <div className="flex items-center gap-2">
-        <Checkbox id={propKey} checked={isChecked} disabled={disabled} />
-        <Label htmlFor={propKey} className="flex" disabled={disabled}>
-          {label}
-        </Label>
-      </div>
-    );
-  },
-  (prevProps, nextProps) => {
-    console.log(prevProps, nextProps);
-    console.log(isEqual(prevProps, nextProps));
-    return isEqual(prevProps, nextProps);
-  }
-);
+const CheckboxField = memo(({ fieldSettings }: CheckboxFieldProps) => {
+  const { propKey, label, isChecked, disabled } = fieldSettings;
+  return (
+    <div className="flex items-center gap-2">
+      <Checkbox id={propKey} checked={isChecked} disabled={disabled} />
+      <Label htmlFor={propKey} className="flex" disabled={disabled}>
+        {label}
+      </Label>
+    </div>
+  );
+}, isEqual);
 
 export default CheckboxField;

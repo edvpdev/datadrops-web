@@ -25,9 +25,6 @@ export default function SyncOverviewSettingsHelpModal({
   entitySettingInView,
   dependency
 }: SyncOverviewSettingsHelpModalProps) {
-  // todo
-  console.log('rerender', entitySettingInView, dependency);
-
   const { data, isFetching } = useGetEntitiesQueryWithType(
     {
       providerId: dependency ? dependency!.provider : '',

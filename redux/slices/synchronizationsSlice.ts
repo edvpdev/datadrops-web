@@ -14,7 +14,6 @@ export const syncsSlice = createSlice({
   initialState,
   reducers: {
     setSyncs: (state, action: PayloadAction<ISynchronization[]>) => {
-      console.log('setSyncs', action.payload);
       state.data = action.payload;
     }
   }

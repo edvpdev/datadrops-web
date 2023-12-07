@@ -1,11 +1,10 @@
 'use client';
 
 import { APP_DOMAIN, SHOW_BACKGROUND_SEGMENTS } from '@/lib/constants';
-import useScroll from '@/lib/hooks/use-scroll';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
-import useMediaQuery from '@/lib/hooks/use-media-query';
+import { useMediaQuery, useScroll } from '@/lib/hooks';
 import { MaxWidthWrapper } from '@/lib/components';
 
 export default function NavBar() {
