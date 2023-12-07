@@ -4,6 +4,7 @@ import prisma from '@/lib/prismadb';
 import Google from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
 import { IProvider } from '../types';
+import { customLog } from '@/actions/customLog.action';
 
 declare module 'next-auth' {
   interface Session {
@@ -31,7 +32,6 @@ export const HOME_HOSTNAMES = new Set([
 ]);
 
 export const isHomeHostname = (domain: string) => {
-  console.log(domain);
   return HOME_HOSTNAMES.has(domain);
 };
 
@@ -93,16 +93,27 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      console.log('signIn.user', user);
-      console.log('signIn.acc', account);
-      console.log('signIn.prof', profile);
-      console.log('signIn.email', email);
+      customLog.info('User signed in', {
+        accountId: account?.id,
+        userId: user?.id,
+        email: email
+      });
+      await customLog.flush();
       return true;
     },
     // @ts-ignore
     async jwt({ token, user, account }) {
       if (account) {
-        console.log('here X');
+        customLog.info('Assigning first token for user', {
+          token: {
+            expires_at: token.expires_at,
+            refresh_token: token.refresh_token,
+            access_token: token.access_token
+          },
+          userId: user?.id
+        });
+        await customLog.flush();
+
         // Save the access token and refresh token in the JWT on the initial login
         return {
           ...token,
@@ -112,11 +123,19 @@ export const authOptions: AuthOptions = {
           providerAccountId: account.providerAccountId
         };
       } else if (Date.now() < token.expires_at) {
-        console.log('here B');
+        // console.log('here B');
         // If the access token has not expired yet, return it
         return token;
       } else {
-        console.log('here C');
+        customLog.info('Refreshing token for user', {
+          token: {
+            expires_at: token.expires_at,
+            refresh_token: token.refresh_token,
+            access_token: token.access_token
+          },
+          userId: user?.id
+        });
+        await customLog.flush();
         // If the access token has expired, try to refresh it
         try {
           // https://accounts.google.com/.well-known/openid-configuration
@@ -171,7 +190,11 @@ export const authOptions: AuthOptions = {
             refresh_token: tokens.refresh_token ?? token.refresh_token
           };
         } catch (error) {
-          console.error('Error refreshing access token', error);
+          customLog.error('Refreshing token for user', {
+            userId: user?.id,
+            error
+          });
+          await customLog.flush();
           // The error property will be used client-side to handle the refresh token error
           return { ...token, error: 'RefreshAccessTokenError' as const };
         }

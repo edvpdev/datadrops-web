@@ -47,7 +47,6 @@ const SyncsHistoryListFilters = memo(function SyncsHistoryListFilters({
 
   useEffect(() => {
     const newSyncs = filteredSyncs(syncs, filters);
-    console.log(newSyncs);
     setSyncs(newSyncs);
   }, [filters, syncs, setSyncs]);
 

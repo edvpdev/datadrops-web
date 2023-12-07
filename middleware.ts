@@ -2,7 +2,6 @@ import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
 import { parse } from './lib/middleware/utils';
 import { APP_HOSTNAMES, isHomeHostname } from './lib/constants';
 import { HomeMiddleware, authMiddleware } from './lib/middleware';
-import { NextRequestWithAuth } from 'next-auth/middleware';
 
 export const config = {
   matcher: [
@@ -19,16 +18,20 @@ export const config = {
 
 export default async function middleware(req: NextRequest, ev: NextFetchEvent) {
   const { domain, path, key } = parse(req);
-  console.log('middleware', domain, path, key, req.url);
+  // console.log('middleware', domain, path, key, req.url);
+  if (path === '/_axiom/web-vitals' || path === '/_axiom/logs') {
+    return NextResponse.next();
+  }
+
   // for App
   if (APP_HOSTNAMES.has(domain)) {
-    console.log('isAppHost', domain, path, key, req.url);
+    // console.log('isAppHost', domain, path, key, req.url);
     return authMiddleware(req, ev);
   }
 
   // for root pages (e.g. dub.co, vercel.fyi, etc.)
   if (isHomeHostname(domain)) {
-    console.log('isRoot', domain, path, key, req.url);
+    // console.log('isRoot', domain, path, key, req.url);
     return HomeMiddleware(req);
   }
 

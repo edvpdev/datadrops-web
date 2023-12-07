@@ -12,7 +12,6 @@ interface OverviewLastSyncProps {
 const SyncOverviewLastStatus = memo(function SyncOverviewLastStatus({
   sync
 }: OverviewLastSyncProps) {
-  console.log('rerender');
   if (!sync) {
     return (
       <div className="max-w grid rounded-lg border border-gray-200 bg-white p-4 shadow-sm">

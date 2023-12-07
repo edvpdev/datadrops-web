@@ -27,7 +27,6 @@ export default function SyncsHistory({ syncs }: SyncsOverviewHistoryListProps) {
   });
 
   useEffect(() => {
-    console.log('here');
     setHistorySyncs(syncs);
   }, [syncs]);
 
@@ -47,7 +46,6 @@ export default function SyncsHistory({ syncs }: SyncsOverviewHistoryListProps) {
       providerId: string,
       entityLabel: string
     ) => {
-      console.log(modal, lastOrCurrentSyncId, providerId, entityLabel);
       setSyncOvState({
         syncOverviewInViewID: lastOrCurrentSyncId,
         entityInViewID: entityLabel,

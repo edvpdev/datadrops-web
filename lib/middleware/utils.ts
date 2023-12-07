@@ -3,7 +3,6 @@ import { PRIVATE_PAGES } from '../constants';
 
 export const parse = (req: NextRequest) => {
   let domain = req.headers.get('host') as string;
-  console.log('parse', domain);
   domain = domain.replace('www.', ''); // remove www. from domain
 
   // path is the path of the URL (e.g. dub.co/stats/github -> /stats/github)
@@ -28,6 +27,5 @@ export const removeSubDomain = (domain: string) => {
 };
 
 export const isPagePrivate = (url: string): boolean => {
-  console.log('isPagePrivate,', url);
   return PRIVATE_PAGES.some((page) => url.includes(page));
 };

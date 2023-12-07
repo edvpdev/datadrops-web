@@ -14,7 +14,6 @@ export const userEntitiesSlice = createSlice({
   initialState,
   reducers: {
     setUserEntities: (state, action: PayloadAction<IProviderEntity[]>) => {
-      console.log('setUserEntities', action.payload);
       state.data = [...action.payload];
     },
     clearProviders: (state) => {

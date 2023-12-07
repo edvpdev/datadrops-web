@@ -10,7 +10,6 @@ interface ProviderButtonProps {
 }
 
 export default function ProviderButton({ provider }: ProviderButtonProps) {
-  console.log(APP_DOMAIN);
   return (
     <div>
       <div

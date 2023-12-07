@@ -48,7 +48,6 @@ const FiltersBox = ({ filters, onFiltersChange }: FilterBox) => {
             }))
           ]}
           onChange={(e) => {
-            console.log(e);
             onFiltersChange({ provider: e, entity: { value: '', label: '' } });
           }}
           value={filters.provider}
@@ -61,7 +60,6 @@ const FiltersBox = ({ filters, onFiltersChange }: FilterBox) => {
           name="entity"
           options={[...selectedProviderEntities]}
           onChange={(e) => {
-            console.log(e);
             onFiltersChange({ entity: e });
           }}
           value={filters.entity}
@@ -78,7 +76,6 @@ const FiltersBox = ({ filters, onFiltersChange }: FilterBox) => {
             label: status
           }))}
           onChange={(e) => {
-            console.log(e);
             onFiltersChange({ status: e });
           }}
           value={filters.status}

@@ -19,7 +19,6 @@ export default function IntegrationsWrapper({
   );
   const activeProviders = useSelector(selectActiveProviders);
 
-  console.log(activeProviders);
   const {
     data: synchronizations,
     isLoading: syncsLoading,
@@ -44,4 +43,6 @@ export default function IntegrationsWrapper({
   if (providersSuccess || syncsSuccess) {
     return <div className="p-12">{children}</div>;
   }
+
+  // return <div className="p-12">{children}</div>;
 }

@@ -2,19 +2,25 @@
 
 import ProviderCard from 'features/dashboard/integrations/ProviderCard';
 import { useGetProvidersQuery } from 'redux/apis/providersApi';
-import { IProvider, IProviderWithStatus } from '@/lib/types';
+import { IProviderWithStatus } from '@/lib/types';
 import { signIn, useSession } from 'next-auth/react';
+import { useCustomLog } from '@/lib/hooks';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
+import { useEffect } from 'react';
+
+// export async function getServerSideProps() {
+//   // Pass data to the page via props
+//   return { props: { data: [] } };
+// }
 
 export default function ProvidersPage() {
-  const { data: providers } = useGetProvidersQuery();
-  const { data: session, status } = useSession();
-  console.log(session);
+  // const { data: providers } = useGetProvidersQuery();
+  const providers = useSelector((state: RootState) => state.userProviders.data);
+
+  const customLog = useCustomLog();
+  // customLog.debug('session', session ? session : undefined);
   const connectFn = (providerID: string) => {
-    // toast.custom((t) => (
-    //   <Toasty t={t} type="error" message="Synced unsuccessfully" />
-    // ));
     signIn(providerID);
   };
   return (

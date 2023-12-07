@@ -1,5 +1,6 @@
 'use client';
 
+import { useCustomLog } from '@/lib/hooks';
 import { IProviderEntity } from '@/lib/types';
 import { Badge } from 'flowbite-react';
 import { isEqual } from 'lodash';
@@ -12,7 +13,8 @@ interface SyncOverviewDetailsProps {
 const SyncOverviewDetails = memo(function SyncOverviewDetails({
   entity
 }: SyncOverviewDetailsProps) {
-  console.log('rerender');
+  const customLog = useCustomLog();
+  customLog.debug('rerender SyncOverviewDetails');
   if (!entity)
     return (
       <div className="max-w grid gap-2 rounded-lg border border-gray-200 bg-white p-4 shadow-sm">

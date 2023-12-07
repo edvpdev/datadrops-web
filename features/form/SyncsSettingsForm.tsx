@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import TextField from './TextField';
 import { isEqual } from 'lodash';
 import CheckboxField from './CheckboxField';
+import { useCustomLog } from '@/lib/hooks';
 
 export interface FormData {
   generalSettings: any;
@@ -30,6 +31,8 @@ const SyncsSettingsForm = React.memo(
     const [errors, setErrors] = useState<FormErrors>({});
 
     const { generalDepSettings, entityDepSettings, readonly } = props;
+
+    const customLog = useCustomLog();
 
     useEffect(() => {
       const newFormValues: FormData = {
@@ -55,29 +58,22 @@ const SyncsSettingsForm = React.memo(
     }, [entityDepSettings, generalDepSettings]);
 
     const validateForm = useCallback((): FormErrors => {
-      console.log('validating');
       const newErrorValues: FormErrors = {};
       entityDepSettings.forEach((dependency) => {
-        console.log(
-          'validating',
-          dependency.required,
-          dependency.id,
-          values?.entitySettings[dependency.id]
-        );
+        customLog.debug('validating', dependency);
         if (dependency.required && !values?.entitySettings[dependency.id]) {
           newErrorValues[dependency.id] = 'Required';
         }
 
         if (dependency.pattern && values?.entitySettings[dependency.id]) {
           const regex = new RegExp(dependency.pattern);
-          console.log('regex', regex, values?.entitySettings[dependency.id]);
           if (!regex.test(values?.entitySettings[dependency.id])) {
             newErrorValues[dependency.id] = 'Invalid Pattern';
           }
         }
       });
 
-      console.log('after validation', newErrorValues, values);
+      customLog.debug('after validation', newErrorValues);
 
       setErrors({
         ...newErrorValues
@@ -86,7 +82,7 @@ const SyncsSettingsForm = React.memo(
       return {
         ...newErrorValues
       };
-    }, [values, entityDepSettings]);
+    }, [values, entityDepSettings, customLog]);
 
     const validateFormField = (
       dependency: IProviderEntityDepSettings,
@@ -99,7 +95,6 @@ const SyncsSettingsForm = React.memo(
 
       if (dependency.pattern && value) {
         const regex = new RegExp(dependency.pattern);
-        console.log('regex', regex, value);
         if (!regex.test(value)) {
           newErrorValues[dependency.id] = 'Invalid Pattern';
         }
@@ -175,9 +170,6 @@ const SyncsSettingsForm = React.memo(
       []
     );
 
-    console.log(values);
-    console.log(errors);
-
     return (
       <div className="max-w grid rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
         <h5 className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">
@@ -251,7 +243,6 @@ const FormField = memo(
     helpButton,
     readonly = false
   }: FormField) => {
-    console.log('rerendering', dependencySetting.id);
     if (type === 'boolean') {
       return <CheckboxField fieldSettings={dependencySetting} />;
     }
