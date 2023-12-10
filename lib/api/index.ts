@@ -2,11 +2,11 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import https from 'https';
 import {
   ICreateSynchronizationPayload,
-  IProvider,
   IProviderWithStatus,
   ISynchronization,
   SynchronizationsOverview
 } from '../types';
+import { customLog } from '@/actions/customLog.action';
 
 axios.defaults.baseURL = process.env.BACKEND_URL!;
 if (process.env.NODE_ENV === 'development') {
@@ -28,15 +28,35 @@ const sleep = (delay: number) => {
 
 axios.interceptors.request.use((config) => {
   config.headers.serviceKey = process.env.SERVICE_KEY!;
+  customLog.info('Axios request', {
+    type: 'axios',
+    path: config.url,
+    method: config.method,
+    userId: config.headers.id
+  });
   return config;
 });
 
 axios.interceptors.response.use(
   async (response) => {
-    await sleep(1000);
+    customLog.info('Axios response', {
+      type: 'axios',
+      path: response.config.url,
+      method: response.config.method,
+      status: response.status,
+      userId: response.config.headers.id
+    });
     return response;
   },
   (error: AxiosError) => {
+    customLog.error('Axios error', {
+      type: 'axios',
+      path: error.config?.url,
+      method: error.config?.method,
+      message: error.message,
+      status: error.response?.status,
+      userId: error.config?.headers.id
+    });
     // const { data, status, config } = error.response as AxiosResponse;
     // switch (status) {
     //   case 400:

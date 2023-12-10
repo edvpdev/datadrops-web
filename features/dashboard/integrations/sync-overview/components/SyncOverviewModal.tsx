@@ -14,7 +14,6 @@ import { Toasty } from '@/lib/components';
 import toast from 'react-hot-toast';
 import { RootState } from 'redux/store';
 import SyncOvContext from '../context/syncOverview.context';
-import { useCustomLog } from '@/lib/hooks';
 
 interface SyncOverviewModalProps {
   historyMode?: boolean;
@@ -38,7 +37,6 @@ const SyncOverviewModal = memo(function DefaultModal({
     closeModalFn,
     isSyncOvModalOpen
   } = useContext(SyncOvContext);
-  const customLog = useCustomLog();
 
   const [runSynchronization, { isLoading: isSyncing }] =
     useRunSynchronizationMutation();
@@ -67,20 +65,18 @@ const SyncOverviewModal = memo(function DefaultModal({
       })
         .unwrap()
         .then((res) => {
-          customLog.info('Sync created successfully', res);
           toast.custom((t) => (
             <Toasty t={t} type="success" message="Synced successfully" />
           ));
           closeModalFn();
         })
         .catch((err) => {
-          customLog.error('Error while creating sync', { msg: err.message });
           toast.custom((t) => (
             <Toasty t={t} type="error" message="Synced unsuccessfully" />
           ));
         });
     },
-    [runSynchronization, providerKeyInView, closeModalFn, customLog]
+    [runSynchronization, providerKeyInView, closeModalFn]
   );
 
   if (!entity) return null;

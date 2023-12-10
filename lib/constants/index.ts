@@ -93,51 +93,73 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      customLog.info('User signed in', {
-        accountId: account?.id,
-        userId: user?.id,
-        email: email
-      });
-      await customLog.flush();
+      // console.log('User first-time sign in', {
+      //   accountId: account?.id,
+      //   userId: user?.id,
+      //   email: email
+      // });
+      // console.log(account);
+      // // console.log(token);
+      // await customLog.flush();
       return true;
     },
     // @ts-ignore
     async jwt({ token, user, account }) {
-      if (account) {
-        customLog.info('Assigning first token for user', {
-          token: {
-            expires_at: token.expires_at,
-            refresh_token: token.refresh_token,
-            access_token: token.access_token
-          },
-          userId: user?.id
+      if (user && account) {
+        customLog.info('User First time Sign In', {
+          type: 'client',
+          subtype: 'conversion',
+          data: {
+            user
+          }
         });
-        await customLog.flush();
+
+        const [google] = await prisma.account.findMany({
+          where: {
+            providerAccountId: token.providerAccountId,
+            provider: 'google'
+          }
+        });
+
+        await prisma.account.update({
+          data: {
+            access_token: account.access_token,
+            expires_at: Date.now() + account.expires_at! * 1000,
+            refresh_token: account.refresh_token ?? google.refresh_token
+          },
+          where: {
+            provider_providerAccountId: {
+              provider: 'google',
+              providerAccountId: google.providerAccountId
+            }
+          }
+        });
 
         // Save the access token and refresh token in the JWT on the initial login
         return {
           ...token,
           access_token: account.access_token,
-          expires_at: account.expires_at! * 1000,
+          expires_at: Date.now() + account.expires_at! * 1000,
           refresh_token: account.refresh_token,
           providerAccountId: account.providerAccountId
         };
-      } else if (Date.now() < token.expires_at) {
-        // console.log('here B');
-        // If the access token has not expired yet, return it
+      }
+
+      if (Date.now() < token.expires_at) {
         return token;
       } else {
-        customLog.info('Refreshing token for user', {
+        customLog.debug('Refreshing token for user', {
           token: {
             expires_at: token.expires_at,
-            refresh_token: token.refresh_token,
-            access_token: token.access_token
+            refresh_token: token.refresh_token
           },
           userId: user?.id
         });
+        console.log(account);
         await customLog.flush();
         // If the access token has expired, try to refresh it
         try {
+          if (!token.refresh_token) throw new Error('No refresh token');
           // https://accounts.google.com/.well-known/openid-configuration
           // We need the `token_endpoint`.
           const response = await fetch('https://oauth2.googleapis.com/token', {
@@ -165,9 +187,7 @@ export const authOptions: AuthOptions = {
           await prisma.account.update({
             data: {
               access_token: tokens.access_token,
-              expires_at: Math.floor(
-                Date.now() / 1000 + (tokens.expires_in as number)
-              ),
+              expires_at: Date.now() + 1000 * (tokens.expires_in as number),
               refresh_token: tokens.refresh_token ?? google.refresh_token
             },
             where: {
@@ -181,18 +201,20 @@ export const authOptions: AuthOptions = {
           return {
             ...token, // Keep the previous token properties
             access_token: tokens.access_token,
-            expires_at:
-              Math.floor(Date.now() / 1000 + (tokens.expires_in as number)) *
-              1000,
+            expires_at: Date.now() + 1000 * (tokens.expires_in as number),
             // Fall back to old refresh token, but note that
             // many providers may only allow using a refresh token once.
             providerAccountId: token.providerAccountId,
             refresh_token: tokens.refresh_token ?? token.refresh_token
           };
         } catch (error) {
-          customLog.error('Refreshing token for user', {
-            userId: user?.id,
-            error
+          customLog.error('Error refreshing token for user', {
+            type: 'client',
+            subtype: 'error',
+            data: {
+              userId: user?.id,
+              error
+            }
           });
           await customLog.flush();
           // The error property will be used client-side to handle the refresh token error
@@ -201,12 +223,13 @@ export const authOptions: AuthOptions = {
       }
     },
     async session({ session, token }) {
-      session.expires = new Date(token.expires_at).toISOString();
-      session.error = token.error;
-      session.user = {
-        ...session.user
-        // id: token.providerAccountId
-      };
+      if (token) {
+        session.error = token.error;
+        session.user = {
+          ...session.user
+        };
+      }
+
       return session;
     }
   },

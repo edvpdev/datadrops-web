@@ -1,28 +1,36 @@
 'use client';
 
-import ProviderCard from 'features/dashboard/integrations/ProviderCard';
-import { useGetProvidersQuery } from 'redux/apis/providersApi';
+import ProviderCard from '@/components/dashboard/integrations/providers/ProviderCard';
 import { IProviderWithStatus } from '@/lib/types';
-import { signIn, useSession } from 'next-auth/react';
-import { useCustomLog } from '@/lib/hooks';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
 import { useEffect } from 'react';
-
-// export async function getServerSideProps() {
-//   // Pass data to the page via props
-//   return { props: { data: [] } };
-// }
+import { useCustomLog } from '@/lib/hooks';
 
 export default function ProvidersPage() {
-  // const { data: providers } = useGetProvidersQuery();
   const providers = useSelector((state: RootState) => state.userProviders.data);
-
   const customLog = useCustomLog();
-  // customLog.debug('session', session ? session : undefined);
+  const session = useSession();
+
+  useEffect(() => {
+    if (session?.data?.error) {
+      // toast.error('Your account is blocked');
+      signOut();
+    }
+  }, [session]);
+
   const connectFn = (providerID: string) => {
+    customLog.info('Provider connect', {
+      type: 'client',
+      subtype: 'conversion',
+      data: {
+        providerID
+      }
+    });
     signIn(providerID);
   };
+
   return (
     <div className="flex flex-wrap gap-8">
       {providers?.map((provider: IProviderWithStatus) => (
