@@ -1,7 +1,5 @@
-import { customLog } from '@/actions/customLog.action';
 import getCurrentUser from '@/actions/getCurrentUser';
 import { agent } from '@/lib/api';
-import { withAxiom } from 'next-axiom';
 import { NextRequest, NextResponse } from 'next/server';
 
 interface EntitiesRouteProps {
@@ -37,7 +35,6 @@ export const GET = async (
     }
     return NextResponse.json([]);
   } catch (error) {
-    customLog.error('Error in POST /api/synchronizations', error as any);
     return NextResponse.error();
   }
 };

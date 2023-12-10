@@ -1,7 +1,5 @@
-import { customLog } from '@/actions/customLog.action';
 import getCurrentUser from '@/actions/getCurrentUser';
 import { agent } from '@/lib/api';
-import { AxiomRequest, withAxiom } from 'next-axiom';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (request: NextRequest) => {
@@ -25,7 +23,6 @@ export const GET = async (request: NextRequest) => {
     );
     return NextResponse.json(response);
   } catch (error) {
-    customLog.error('Error in POST /api/synchronizations', error as any);
     return NextResponse.error();
   }
 };
@@ -47,7 +44,6 @@ export const POST = async (request: NextRequest) => {
     );
     return NextResponse.json(response);
   } catch (error) {
-    customLog.error('Error in POST /api/synchronizations', error as any);
     return NextResponse.error();
   }
 };

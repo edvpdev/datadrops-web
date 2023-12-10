@@ -13,8 +13,11 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false
-    }).concat([baseApi.middleware, epicMiddleware, logger])
-  // TODO: remove logger in production
+    }).concat(
+      process.env.NODE_ENV === 'development'
+        ? [baseApi.middleware, epicMiddleware, logger]
+        : [baseApi.middleware, epicMiddleware]
+    )
 });
 
 epicMiddleware.run(rootEpic);
