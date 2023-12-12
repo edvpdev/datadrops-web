@@ -1,6 +1,6 @@
-import DashNavbar from 'features/dashboard/dash-navbar';
-import DashSidebar from 'features/dashboard/dash-sidebar';
-import { IntegrationsWrapper } from 'features/dashboard/integrations';
+import DashNavbar from '@/features/dashboard/dash-navbar';
+import DashSidebar from '@/features/dashboard/dash-sidebar';
+import { IntegrationsWrapper } from '@/features/dashboard/integrations';
 import { ReactNode } from 'react';
 
 export default async function DashboardLayout({

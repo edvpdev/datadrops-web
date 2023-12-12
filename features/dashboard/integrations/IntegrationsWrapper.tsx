@@ -43,6 +43,4 @@ export default function IntegrationsWrapper({
   if (providersSuccess || syncsSuccess) {
     return <div className="p-12">{children}</div>;
   }
-
-  // return <div className="p-12">{children}</div>;
 }

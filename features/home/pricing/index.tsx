@@ -1,4 +1,4 @@
-import PricingCard from 'features/home/pricing-card/PricingCard';
+import PricingCard from '@/features/home/pricing-card/PricingCard';
 import { cn } from '@/lib/utils';
 import { MaxWidthWrapper } from '@/lib/components';
 

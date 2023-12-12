@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "module": "commonjs",
+    "types": ["jest", "node"],
+    // Necessary to import dependency uuid using CommonJS
+    "allowJs": true,
+    "paths": {
+      "@/mocks/*": ["__mocks__/*"],
+      "@/actions/*": ["app/actions/*"],
+      "@/components/*": ["features/*"],
+      "@/pages/*": ["pages/*"],
+      "@/app/*": ["app/*"],
+      "@/styles/*": ["styles/*"],
+      "@/ui/*": ["app/ui/*"],
+      "@/lib/*": ["lib/*"],
+      "contentlayer/generated": ["./.contentlayer/generated"]
+    }
+  },
+  "include": ["jest.config.ts", "./__tests__/*.test.ts(x)", "**/*.d.ts"]
+}

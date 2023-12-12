@@ -1,7 +1,7 @@
 'use client';
 
 import { PROVIDERS } from '@/lib/constants';
-import ProviderButton from 'features/auth/ProviderButton';
+import ProviderButton from '@/features/auth/ProviderButton';
 import { useSession } from 'next-auth/react';
 
 export default function SignIn() {

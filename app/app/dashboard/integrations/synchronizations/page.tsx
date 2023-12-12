@@ -2,7 +2,7 @@
 
 import { useSelector } from 'react-redux';
 import { RootState } from 'redux/store';
-import { SynchronizationOverviews } from 'features/dashboard/integrations';
+import { SynchronizationOverviews } from '@/features/dashboard/integrations';
 
 export default function SynchronizationsPage() {
   const synchronizationsOv = useSelector(

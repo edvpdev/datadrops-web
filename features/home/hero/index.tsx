@@ -5,7 +5,10 @@ import Link from 'next/link';
 export default function Hero({ className }: { className?: string }) {
   return (
     <MaxWidthWrapper>
-      <div id="hero" className={cn('text-center', className)}>
+      <div
+        id="hero"
+        data-testid="hero"
+        className={cn('text-center', className)}>
         <div className="flex h-[143px] w-full justify-center">
           <ClientOnlyCldImage
             className="relative"

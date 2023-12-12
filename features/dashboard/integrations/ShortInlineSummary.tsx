@@ -12,7 +12,9 @@ export default function ShortSummaryWrapper({
   mainText
 }: ShortSummaryProps) {
   return (
-    <div className="my-2 flex items-center justify-between">
+    <div
+      data-testid="short-summary-wrapper"
+      className="my-2 flex items-center justify-between">
       <div>{mainText}</div>
       <div className="flex items-center gap-2">
         {preButtonText}
