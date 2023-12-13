@@ -4,6 +4,7 @@ import { ISynchronization } from '@/lib/types';
 import { isoToDateString } from '@/lib/utils/index';
 import { isEqual } from 'lodash';
 import { memo } from 'react';
+import DeleteButton from './DeleteButton';
 
 interface OverviewLastSyncProps {
   sync: ISynchronization | undefined;
@@ -61,6 +62,7 @@ const SyncOverviewLastStatus = memo(function SyncOverviewLastStatus({
           </p>
         </>
       )}
+      <DeleteButton className="mt-2 w-1/4" syncId={sync._id} />
     </div>
   );
 }, isEqual);

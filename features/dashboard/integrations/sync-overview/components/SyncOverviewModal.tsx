@@ -14,6 +14,7 @@ import { Toasty } from '@/lib/components';
 import toast from 'react-hot-toast';
 import { RootState } from 'redux/store';
 import SyncOvContext from '../context/syncOverview.context';
+import DeleteButton from './DeleteButton';
 
 interface SyncOverviewModalProps {
   historyMode?: boolean;
@@ -55,8 +56,19 @@ const SyncOverviewModal = memo(function DefaultModal({
   }>();
 
   const syncFn = useCallback(
-    async (entity: IProviderEntity | undefined, syncSettings: IFormInputs) => {
+    async (entity: IProviderEntity | undefined) => {
       if (!entity || !providerKeyInView) return;
+
+      const validation = formRef.current?.validateForm();
+
+      if (validation && Object.values(validation).length > 0) return;
+
+      const syncSettings: IFormInputs = formRef.current?.getFormState();
+      if (
+        entity.dependsOn.length > 0 &&
+        Object.keys(syncSettings?.entitySettings).length === 0
+      )
+        return;
 
       await runSynchronization({
         providerId: providerKeyInView,
@@ -76,7 +88,7 @@ const SyncOverviewModal = memo(function DefaultModal({
           ));
         });
     },
-    [runSynchronization, providerKeyInView, closeModalFn]
+    [runSynchronization, providerKeyInView, closeModalFn, formRef]
   );
 
   if (!entity) return null;
@@ -104,20 +116,9 @@ const SyncOverviewModal = memo(function DefaultModal({
             <SyncButton
               disabled={isSyncing || sync?.status === 'started'}
               lastStatus={sync?.status || ''}
-              isLoading={isSyncing}
+              isSyncing={isSyncing}
               onClick={() => {
-                const validation = formRef.current?.validateForm();
-
-                if (validation && Object.values(validation).length > 0) return;
-
-                const settings = formRef.current?.getFormState();
-                if (
-                  entity.dependsOn.length > 0 &&
-                  Object.keys(settings?.entitySettings).length === 0
-                )
-                  return;
-
-                syncFn(entity, settings);
+                syncFn(entity);
               }}
             />
           )}

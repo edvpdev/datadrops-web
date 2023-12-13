@@ -131,6 +131,7 @@ const Synchronizations = {
     user: AxiosUserCredentials,
     providers: string
   ) => {
+    console.log(providers);
     return requests.get<SynchronizationsOverview>(
       `/integrations/synchronizations?providers=${providers}`,
       user
