@@ -1,5 +1,5 @@
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { AuthOptions, TokenSet } from 'next-auth';
+import { AuthOptions, DefaultSession, TokenSet } from 'next-auth';
 import prisma from '@/lib/prismadb';
 import Google from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
@@ -7,8 +7,18 @@ import { IProvider } from '../types';
 import { customLog } from '@/actions/customLog.action';
 
 declare module 'next-auth' {
-  interface Session {
+  interface Session extends DefaultSession {
     error?: 'RefreshAccessTokenError';
+    user?: {
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      status?: string;
+    };
+  }
+
+  interface User {
+    status?: string;
   }
 }
 
@@ -19,6 +29,7 @@ declare module 'next-auth/jwt' {
     refresh_token: string;
     error?: 'RefreshAccessTokenError';
     providerAccountId: string;
+    status: string;
   }
 }
 
@@ -88,31 +99,52 @@ export const authOptions: AuthOptions = {
           scope:
             'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/gmail.readonly'
         }
+      },
+      profile(profile) {
+        return {
+          // Return the default fields
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          emailVerified: profile.email_verified,
+          status: 'standard'
+        };
       }
     })
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
+      customLog.info('User Sign up', {
+        type: 'client',
+        subtype: 'conversion',
+        data: {
+          user
+        }
+      });
+      await customLog.flush();
       // console.log('User first-time sign in', {
       //   accountId: account?.id,
       //   userId: user?.id,
       //   email: email
       // });
-      // console.log(account);
-      // // console.log(token);
       // await customLog.flush();
       return true;
     },
     // @ts-ignore
     async jwt({ token, user, account }) {
       if (user && account) {
-        customLog.info('User First time Sign In', {
+        // console.log('User First time Sign In');
+        customLog.info('User Sign In', {
           type: 'client',
           subtype: 'conversion',
           data: {
             user
           }
         });
+        await customLog.flush();
+        // console.log(account);
+        // console.log(user);
 
         const [google] = await prisma.account.findMany({
           where: {
@@ -124,7 +156,7 @@ export const authOptions: AuthOptions = {
         await prisma.account.update({
           data: {
             access_token: account.access_token,
-            expires_at: Date.now() + account.expires_at! * 1000,
+            expires_at: account.expires_at! * 1000,
             refresh_token: account.refresh_token ?? google.refresh_token
           },
           where: {
@@ -134,28 +166,39 @@ export const authOptions: AuthOptions = {
             }
           }
         });
+        // create role document here
 
         // Save the access token and refresh token in the JWT on the initial login
+        // console.log('Saving access token and refresh token in JWT');
+        // console.log({
+        //   access_token: account.access_token,
+        //   expires_at: account.expires_at! * 1000,
+        //   refresh_token: account.refresh_token ?? google.refresh_token,
+        //   providerAccountId: account.providerAccountId
+        // });
         return {
           ...token,
           access_token: account.access_token,
-          expires_at: Date.now() + account.expires_at! * 1000,
-          refresh_token: account.refresh_token,
-          providerAccountId: account.providerAccountId
+          expires_at: account.expires_at! * 1000,
+          refresh_token: account.refresh_token ?? google.refresh_token,
+          providerAccountId: account.providerAccountId,
+          status: (user as any).status || 'standard'
         };
       }
 
       if (Date.now() < token.expires_at) {
         return token;
       } else {
+        // console.log('Refreshing token for user');
+        // console.log(token);
         customLog.debug('Refreshing token for user', {
           token: {
             expires_at: token.expires_at,
             refresh_token: token.refresh_token
           },
-          userId: user?.id
+          userId: token.sub // sub is the user id
         });
-        console.log(account);
+        // console.log(account);
         await customLog.flush();
         // If the access token has expired, try to refresh it
         try {
@@ -198,6 +241,14 @@ export const authOptions: AuthOptions = {
             }
           });
 
+          // console.log('Returning refreshed token');
+          // console.log({
+          //   access_token: tokens.access_token,
+          //   expires_at: Date.now() + 1000 * (tokens.expires_in as number),
+          //   providerAccountId: token.providerAccountId,
+          //   refresh_token: tokens.refresh_token ?? token.refresh_token
+          // });
+
           return {
             ...token, // Keep the previous token properties
             access_token: tokens.access_token,
@@ -205,7 +256,8 @@ export const authOptions: AuthOptions = {
             // Fall back to old refresh token, but note that
             // many providers may only allow using a refresh token once.
             providerAccountId: token.providerAccountId,
-            refresh_token: tokens.refresh_token ?? token.refresh_token
+            refresh_token: tokens.refresh_token ?? token.refresh_token,
+            status: token.status || 'standard'
           };
         } catch (error) {
           customLog.error('Error refreshing token for user', {
@@ -222,12 +274,17 @@ export const authOptions: AuthOptions = {
         }
       }
     },
-    async session({ session, token }) {
+    async session({ session, token, user }) {
+      // console.log('Session', session);
+      // console.log('Token', token);
+      // console.log('User', user);
       if (token) {
         session.error = token.error;
         session.user = {
-          ...session.user
+          ...session.user,
+          status: token.status
         };
+        // session.status = token.status;
       }
 
       return session;

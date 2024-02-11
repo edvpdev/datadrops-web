@@ -1,22 +1,19 @@
 'use client';
 
-import { IProvider } from '@/lib/types';
-import { createSelector } from '@reduxjs/toolkit';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { baseApi } from 'redux/apis/baseApi';
 import { useGetProvidersQuery } from 'redux/apis/providersApi';
 import { useGetSynchronizationsQuery } from 'redux/apis/synchronizationsApi';
-import { RootState } from 'redux/store';
+import { selectActiveProviders } from 'redux/slices';
+import store from 'redux/store';
 
 export default function IntegrationsWrapper({
   children
 }: {
   children: ReactNode;
 }) {
-  const selectActiveProviders = createSelector(
-    (state: RootState) => state.userProviders.data,
-    (userProviders: IProvider[]) => userProviders.map((p) => p.key)
-  );
+  const [tempState, setTempState] = useState(0);
   const activeProviders = useSelector(selectActiveProviders);
 
   const {
@@ -24,7 +21,7 @@ export default function IntegrationsWrapper({
     isLoading: syncsLoading,
     isSuccess: syncsSuccess,
     isError: syncsError
-  } = useGetSynchronizationsQuery(activeProviders.join(','));
+  } = useGetSynchronizationsQuery(activeProviders.map((p) => p.key).join(','));
   const {
     data: providers,
     isLoading: providersLoading,
@@ -32,17 +29,53 @@ export default function IntegrationsWrapper({
     isError: providersError
   } = useGetProvidersQuery();
 
+  useEffect(() => {
+    if (tempState === 0) return;
+    store.dispatch(baseApi.util.resetApiState());
+  }, [tempState]);
+
   if (syncsLoading || providersLoading) {
-    return <div className="p-12">Loading...</div>;
+    return (
+      <div
+        key={tempState}
+        className="flex h-full flex-col items-center justify-center p-12">
+        Loading...
+      </div>
+    );
   }
 
   if (syncsError || providersError) {
-    return <div className="p-12">Error</div>;
+    return (
+      <div
+        key={tempState}
+        className="flex h-full flex-col items-center justify-center gap-2 p-12">
+        An error occurred while loading the data. Please try again later.
+        <button
+          className="btn btn-sm"
+          onClick={() => setTempState((key) => key + 1)}>
+          Reload
+        </button>
+      </div>
+    );
   }
 
   if (providersSuccess || syncsSuccess) {
-    return <div className="p-12">{children}</div>;
+    return (
+      // <div className="h-[calc(100%)] min-h-[calc(100%-64px)] p-12">
+      <div className="flex h-full flex-col p-12">{children}</div>
+    );
   }
 
-  // return <div className="p-12">{children}</div>;
+  // return (
+  //   <div
+  //     key={tempState}
+  //     className="flex h-full flex-col items-center justify-center gap-2 p-12">
+  //     An error occurred while loading the data. Please try again later.
+  //     <button
+  //       className="btn btn-sm"
+  //       onClick={() => setTempState((key) => key + 1)}>
+  //       Reload
+  //     </button>
+  //   </div>
+  // );
 }

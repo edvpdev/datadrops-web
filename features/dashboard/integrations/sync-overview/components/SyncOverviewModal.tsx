@@ -14,7 +14,6 @@ import { Toasty } from '@/lib/components';
 import toast from 'react-hot-toast';
 import { RootState } from 'redux/store';
 import SyncOvContext from '../context/syncOverview.context';
-import DeleteButton from './DeleteButton';
 
 interface SyncOverviewModalProps {
   historyMode?: boolean;
@@ -73,12 +72,13 @@ const SyncOverviewModal = memo(function DefaultModal({
       await runSynchronization({
         providerId: providerKeyInView,
         entityLabel: entity.id,
+        prevSyncId: sync?._id || '',
         ...syncSettings
       })
         .unwrap()
         .then((res) => {
           toast.custom((t) => (
-            <Toasty t={t} type="success" message="Synced successfully" />
+            <Toasty t={t} type="success" message="Sync started successfully" />
           ));
           closeModalFn();
         })
@@ -103,7 +103,7 @@ const SyncOverviewModal = memo(function DefaultModal({
         <Modal.Body>
           <div className="grid gap-2">
             {!historyMode && <SyncOverviewDetails entity={entity} />}
-            <SyncOverviewLastStatus sync={sync} />
+            <SyncOverviewLastStatus sync={sync} historyMode={historyMode} />
             <SyncOverviewSettings
               entity={entity}
               readonly={historyMode}

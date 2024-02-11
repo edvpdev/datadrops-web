@@ -44,19 +44,21 @@ const SyncOverviewSettings = React.forwardRef<any, SyncOverviewSettingsProps>(
         // placeholder: 'E.g. CHAT,SENT,Label123',
         // errorText: 'Please enter a valid label ID',
         disabled: true,
-        isChecked: true
+        isChecked: true,
+        tip: 'All previously synced entities will be overwritten'
       },
       {
         id: 'limit',
         propKey: 'limit',
-        label: 'Limit (100)',
+        label: 'Limit',
         type: 'boolean',
         required: false,
         // pattern: '^[0-9]+$',
         // placeholder: 'E.g. CHAT,SENT,Label123',
         // errorText: 'Please enter a valid label ID',
         disabled: true,
-        isChecked: true
+        isChecked: entity.multi,
+        tip: 'Only the first 50 entities will be synced for standard users and 500 for pro users. For more accurate limitations refer to documentation.'
       },
       {
         id: 'multi',
@@ -68,7 +70,8 @@ const SyncOverviewSettings = React.forwardRef<any, SyncOverviewSettingsProps>(
         // placeholder: 'E.g. CHAT,SENT,Label123',
         // errorText: 'Please enter a valid label ID',
         disabled: true,
-        isChecked: entity.multi || false
+        isChecked: entity.multi || false,
+        tip: 'Indicates that there can be more than one entity'
       }
     ];
 
@@ -90,7 +93,7 @@ const SyncOverviewSettings = React.forwardRef<any, SyncOverviewSettingsProps>(
       </button>
     );
 
-    const res = useMemo(() => {
+    const depSettingsWithHelpButton = useMemo(() => {
       if (!entity.dependsOn || !entities) return [];
 
       return entity.dependsOn
@@ -139,7 +142,7 @@ const SyncOverviewSettings = React.forwardRef<any, SyncOverviewSettingsProps>(
         />
         <SyncsSettingsForm
           generalDepSettings={generalSettingsSchema}
-          entityDepSettings={res}
+          entityDepSettings={depSettingsWithHelpButton}
           readonly={readonly}
           ref={ref}></SyncsSettingsForm>
       </>

@@ -1,3 +1,4 @@
+import ConfirmationModal from '@/lib/components/ConfirmationModal';
 import DashNavbar from 'features/dashboard/dash-navbar';
 import DashSidebar from 'features/dashboard/dash-sidebar';
 import { IntegrationsWrapper } from 'features/dashboard/integrations';
@@ -13,8 +14,12 @@ export default async function DashboardLayout({
       <DashSidebar />
       <div className="flex h-full w-full flex-col">
         <DashNavbar />
-        <div className="w-[100% - 16rem]">
-          <IntegrationsWrapper>{children}</IntegrationsWrapper>
+        {/*  <div className="h-[calc(100%-64px)] overflow-y-auto"> */}
+        <div className="flex flex-grow flex-col overflow-hidden">
+          <IntegrationsWrapper>
+            <ConfirmationModal />
+            {children}
+          </IntegrationsWrapper>
         </div>
       </div>
     </>

@@ -8,7 +8,6 @@ import {
 } from 'redux/slices';
 import {
   Observable,
-  catchError,
   combineLatest,
   filter,
   from,
@@ -40,40 +39,39 @@ export const syncOverviewEpic = (action$: Observable<Action>) =>
 
       const allEntities: IProviderEntity[] = [];
 
-      providers.payload.forEach((provider) => {
-        syncsOverview[provider.title] = provider.entities.map((entity) => {
-          const currentSyncForEntity = sortedSyncs.find(
-            (sync) =>
-              sync.entityLabel === entity.id && sync.status === 'started'
-          );
-          const lastFinishedSyncForEntity = sortedSyncs.find(
-            (sync) =>
-              sync.entityLabel === entity.id &&
-              (sync.status === 'finished' || sync.status === 'failed')
-          );
+      providers.payload
+        .filter((prov) => prov.isBlocked)
+        .forEach((provider) => {
+          syncsOverview[provider.title] = provider.entities.map((entity) => {
+            const currentSyncForEntity = sortedSyncs.find(
+              (sync) =>
+                sync.entityLabel === entity.id && sync.status === 'started'
+            );
+            const lastFinishedSyncForEntity = sortedSyncs.find(
+              (sync) =>
+                sync.entityLabel === entity.id &&
+                (sync.status === 'finished' || sync.status === 'failed')
+            );
 
-          allEntities.push(entity);
+            allEntities.push(entity);
 
-          return {
-            entityLabelTitle: entity.title,
-            entityLabel: entity.id,
-            currentSyncId: currentSyncForEntity?._id || '',
-            lastSyncId: lastFinishedSyncForEntity?._id || '',
-            currentSyncStatus: currentSyncForEntity?.status || '',
-            lastSyncStatus: lastFinishedSyncForEntity?.status || '',
-            currentSyncUpdatedAt: currentSyncForEntity?.updated_at || '',
-            lastSyncUpdatedAt: lastFinishedSyncForEntity?.updated_at || '',
-            providerId: provider.key
-          };
+            return {
+              entityLabelTitle: entity.title,
+              entityLabel: entity.id,
+              currentSyncId: currentSyncForEntity?._id || '',
+              lastSyncId: lastFinishedSyncForEntity?._id || '',
+              currentSyncStatus: currentSyncForEntity?.status || '',
+              lastSyncStatus: lastFinishedSyncForEntity?.status || '',
+              currentSyncUpdatedAt: currentSyncForEntity?.updated_at || '',
+              lastSyncUpdatedAt: lastFinishedSyncForEntity?.updated_at || '',
+              providerId: provider.key
+            };
+          });
         });
-      });
       return from('x').pipe(
         mergeMap(() =>
           of(setSyncsOverview(syncsOverview), setUserEntities(allEntities))
         )
       );
     })
-    // catchError((error: any) => {
-    //   console.log('error', error);
-    // })
   );

@@ -35,16 +35,14 @@ export default function SyncOverviewSettingsHelpModal({
       skip: !dependency
     }
   );
-
   const exampleData = useMemo(() => {
-    if (!data) return '';
+    if (!data || !entitySettingInView) return '';
 
-    return data.map((d) => (d as unknown as any).id).join(',');
-  }, [data]);
-
-  if (!data) {
-    return null;
-  }
+    // TODO: make logic more advanced
+    return data
+      .map((d) => (d as unknown as any)[entitySettingInView?.propKey])
+      .join(',');
+  }, [data, entitySettingInView]);
 
   return (
     <>
@@ -54,7 +52,13 @@ export default function SyncOverviewSettingsHelpModal({
         </Modal.Header>
         <Modal.Body>
           {isFetching && <div>Loading...</div>}
-          {data && !isFetching && (
+          {(!data || data.length === 0) && !isFetching && (
+            <div>
+              Seems like {dependency?.entity || ' dependent entity'} has not
+              been synced yet
+            </div>
+          )}
+          {data && !!data.length && !isFetching && (
             <>
               <div>
                 Below is an example data of the dependant entity. The disabled
@@ -72,6 +76,10 @@ export default function SyncOverviewSettingsHelpModal({
                   readonly={true}
                 />
               )}
+              <div className="text-smnpm mt-6">
+                If you want to see more examples, please go to the{' '}
+                <strong>Data Management</strong> for more advanced querying.
+              </div>
             </>
           )}
         </Modal.Body>

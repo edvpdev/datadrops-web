@@ -8,22 +8,28 @@ import { rootEpic } from './epics/root';
 
 const epicMiddleware = createEpicMiddleware();
 
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false
-    }).concat(
-      process.env.NODE_ENV === 'development'
-        ? [baseApi.middleware, epicMiddleware, logger]
-        : [baseApi.middleware, epicMiddleware]
-    )
-});
+export const makeStore = () => {
+  const store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false
+      }).concat(
+        process.env.NODE_ENV === 'development'
+          ? [baseApi.middleware, epicMiddleware, logger]
+          : [baseApi.middleware, epicMiddleware]
+      )
+  });
 
-epicMiddleware.run(rootEpic);
+  epicMiddleware.run(rootEpic);
+  return store;
+};
 
-export type RootState = ReturnType<typeof store.getState>;
+// Infer the type of makeStore
+export type AppStore = ReturnType<typeof makeStore>;
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<AppStore['getState']>;
+export type AppDispatch = AppStore['dispatch'];
 
-export type AppDispatch = typeof store.dispatch;
-
+const store = makeStore();
 export default store;

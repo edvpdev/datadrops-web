@@ -1,13 +1,25 @@
 import { User } from '@prisma/client';
 import { ISynchronization } from './synchronization.types';
 
-export interface IEntity<T = object> {
+export interface IEntity {
   _id: string;
   userId: User['id'];
   syncId: ISynchronization['_id'];
   providerId: string;
   entityLabel: string;
-  data: T;
+  entityId: string;
+}
+
+export interface ITemplate {
+  _id?: string;
+  providerId: string;
+  entityLabels: string[];
+  entryCollection: string;
+  templateKey: string;
+  title: string;
+  description: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export type LeanGmailMessage = {
@@ -37,10 +49,17 @@ export interface GmailLabel {
 }
 
 export function isGmailLabel(data: any): data is GmailLabel[] {
-  const { id, name, messageListVisibility, labelListVisibility, type } = data[0];
+  const { id, name, messageListVisibility, labelListVisibility, type } =
+    data[0];
   return (
     messageListVisibility !== undefined &&
     labelListVisibility !== undefined &&
     type !== undefined
   );
 }
+
+export interface AggregatedResultsWithPagination<T = any> {
+  results: T[];
+  count: number;
+}
+

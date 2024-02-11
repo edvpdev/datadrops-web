@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import TextField from './TextField';
 import { isEqual } from 'lodash';
 import CheckboxField from './CheckboxField';
-import { useCustomLog } from '@/lib/hooks';
+import { FaInfoCircle } from 'react-icons/fa';
 
 export interface FormData {
   generalSettings: any;
@@ -32,14 +32,13 @@ const SyncsSettingsForm = React.memo(
 
     const { generalDepSettings, entityDepSettings, readonly } = props;
 
-    const customLog = useCustomLog();
-
     useEffect(() => {
       const newFormValues: FormData = {
         generalSettings: {},
         entitySettings: {}
       };
 
+      // todo: revisit of more type of setting will appear
       generalDepSettings.forEach((dependency) => {
         newFormValues['generalSettings'][dependency.id] =
           dependency.type === 'text'
@@ -60,7 +59,6 @@ const SyncsSettingsForm = React.memo(
     const validateForm = useCallback((): FormErrors => {
       const newErrorValues: FormErrors = {};
       entityDepSettings.forEach((dependency) => {
-        customLog.debug('validating', dependency);
         if (dependency.required && !values?.entitySettings[dependency.id]) {
           newErrorValues[dependency.id] = 'Required';
         }
@@ -73,8 +71,6 @@ const SyncsSettingsForm = React.memo(
         }
       });
 
-      customLog.debug('after validation', newErrorValues);
-
       setErrors({
         ...newErrorValues
       });
@@ -82,7 +78,7 @@ const SyncsSettingsForm = React.memo(
       return {
         ...newErrorValues
       };
-    }, [values, entityDepSettings, customLog]);
+    }, [values, entityDepSettings]);
 
     const validateFormField = (
       dependency: IProviderEntityDepSettings,
@@ -118,7 +114,7 @@ const SyncsSettingsForm = React.memo(
           return errors;
         },
         validateForm: () => {
-          validateForm();
+          return validateForm();
         }
       }),
       [values, errors, validateForm]
@@ -182,13 +178,22 @@ const SyncsSettingsForm = React.memo(
             </h5>
             {generalDepSettings.map((dependency) => {
               return (
-                <FormField
-                  key={dependency.id}
-                  type={dependency.type}
-                  dependencySetting={dependency}
-                  onChange={handleGeneralFieldChange}
-                  readonly={readonly}
-                />
+                <div className="flex items-center gap-1" key={dependency.id}>
+                  <FormField
+                    key={dependency.id}
+                    type={dependency.type}
+                    dependencySetting={dependency}
+                    onChange={handleGeneralFieldChange}
+                    readonly={readonly}
+                  />
+                  {dependency.tip && (
+                    <div
+                      className="tooltip tooltip-right text-gray-500"
+                      data-tip={dependency.tip}>
+                      <FaInfoCircle />
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>

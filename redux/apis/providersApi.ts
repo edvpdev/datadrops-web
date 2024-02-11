@@ -9,7 +9,7 @@ export const providersApi = baseApi.injectEndpoints({
       async onQueryStarted(x, { queryFulfilled, dispatch }) {
         const { data } = await queryFulfilled;
         const providersInUse = data
-          .filter((provider) => provider.isBlocked)
+          // .filter((provider) => provider.isBlocked)
           .map((provider) => {
             return {
               key: provider.key,
@@ -32,6 +32,26 @@ export const providersApi = baseApi.injectEndpoints({
             ]
           : // an error occurred, but we still want to refetch this query when `{ type: 'Posts', id: 'LIST' }` is invalidated
             [{ type: 'Providers', id: 'LIST' }]
+    }),
+    deleteAllData: builder.mutation<void, string>({
+      query: (providerKey: string) => ({
+        url: `/providerss/data?provider=${providerKey}`,
+        method: 'POST'
+      }),
+      invalidatesTags: [
+        { type: 'Providers', id: 'LIST' },
+        { type: 'Synchronizations', id: 'LIST' }
+      ]
+    }),
+    disconnect: builder.mutation<void, string>({
+      query: (providerKey: string) => ({
+        url: `/providerss/disconnect?provider=${providerKey}`,
+        method: 'POST'
+      }),
+      invalidatesTags: [
+        { type: 'Providers', id: 'LIST' },
+        { type: 'Synchronizations', id: 'LIST' }
+      ]
     })
   }),
   overrideExisting: false
@@ -39,4 +59,8 @@ export const providersApi = baseApi.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetProvidersQuery } = providersApi;
+export const {
+  useGetProvidersQuery,
+  useDeleteAllDataMutation,
+  useDisconnectMutation
+} = providersApi;

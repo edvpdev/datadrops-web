@@ -25,8 +25,13 @@ export default function ClientOnlyCldImage({
   alt
 }: ClientOnlyCldImageProps) {
   const { isMobile } = useMediaQuery();
+
+  const fallback = (
+    <div
+      className={`h-[${height}px] w-[${width}px] bg-base-100} rounded-md`}></div>
+  );
   return (
-    <ClientOnly>
+    <ClientOnly fallback={fallback}>
       <CldImage
         className={cn('', className)}
         src={src}

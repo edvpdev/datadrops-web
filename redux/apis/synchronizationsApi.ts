@@ -28,6 +28,13 @@ export const synchronizationsApi = baseApi.injectEndpoints({
         };
       },
       invalidatesTags: [{ type: 'Synchronizations', id: 'LIST' }]
+    }),
+    deleteSynchronization: builder.mutation<void, string>({
+      query: (synchronizationId: string) => ({
+        url: `/synchronizations/${synchronizationId}`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: [{ type: 'Synchronizations', id: 'LIST' }]
     })
   }),
   overrideExisting: false
@@ -35,5 +42,8 @@ export const synchronizationsApi = baseApi.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetSynchronizationsQuery, useRunSynchronizationMutation } =
-  synchronizationsApi;
+export const {
+  useGetSynchronizationsQuery,
+  useRunSynchronizationMutation,
+  useDeleteSynchronizationMutation
+} = synchronizationsApi;

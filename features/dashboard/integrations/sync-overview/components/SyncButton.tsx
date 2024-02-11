@@ -1,6 +1,5 @@
 'use client';
 
-import { IProvider, ISynchronization } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { isEqual } from 'lodash';
 import { memo, useCallback } from 'react';
@@ -25,7 +24,7 @@ const SyncButton = memo(function SyncButton({
 
   return (
     <button
-      className={cn('btn btn-sm bg-success', disabled && 'btn-disabled')}
+      className={cn('btn btn-primary btn-sm', disabled && 'btn-disabled')}
       onClick={() => onClickHandler()}>
       {(lastStatus === 'started' || isSyncing) && (
         <span className="loading loading-spinner loading-xs"></span>

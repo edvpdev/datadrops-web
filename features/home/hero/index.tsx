@@ -1,30 +1,39 @@
-import { ClientOnlyCldImage, MaxWidthWrapper } from '@/lib/components';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import Raindrops from '../raindrops';
+import { MaxWidthWrapper } from '@/lib/components';
+import { APP_DOMAIN } from '@/lib/constants';
 
 export default function Hero({ className }: { className?: string }) {
   return (
-    <MaxWidthWrapper>
-      <div id="hero" className={cn('text-center', className)}>
-        <div className="flex h-[143px] w-full justify-center">
-          <ClientOnlyCldImage
-            className="relative"
-            src="datadrops/logo1_y9dxau"
-            alt="Datadrops Logo"
-            width={240}
-            height={54}
-          />
+    <MaxWidthWrapper className="bg-accent">
+      <div id="hero" className={cn('flex', className)}>
+        <div className="basis-1/2">
+          <h1 className="font-display my-5 text-2xl font-extrabold leading-[1.15] text-primary-content sm:text-6xl sm:leading-[1.15]">
+            Connect, analyze and optimize with
+            <br />
+            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Datadrops
+            </span>
+          </h1>
+          <p className="mb-10">
+            Datadrops is the platform for developers and users to seamlessly
+            connect their social profiles, collect the data, and gain valuable
+            insights by transforming data with prebuilt templates and custom
+            queries.
+          </p>
+          <div className="flex gap-2">
+            <button className="btn btn-primary btn-md border-0 bg-gradient-to-r from-primary to-secondary bg-size-200 bg-pos-0 transition-all duration-500 hover:bg-pos-100">
+              <Link href={`${APP_DOMAIN}/sign-in`}>Get Started</Link>
+            </button>
+            {/* <button className="btn btn-primary btn-outline btn-md">
+              <Link href="/sign-in">Learn more</Link>
+            </button> */}
+          </div>
         </div>
-        <h1 className="font-display my-5 text-2xl font-extrabold leading-[1.15] text-gray-600 sm:text-6xl sm:leading-[1.15]">
-          Inspect Drops of Your Data With
-          <br />
-          <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Datadrops
-          </span>
-        </h1>
-        <button className="btn btn-primary btn-md border-0 bg-gradient-to-r from-primary to-secondary bg-size-200 bg-pos-0 text-white transition-all duration-500 sm:btn-lg hover:bg-pos-100">
-          <Link href="/sign-in">Get Started</Link>
-        </button>
+        <div className="basis-1/2">
+          <Raindrops />
+        </div>
       </div>
     </MaxWidthWrapper>
   );

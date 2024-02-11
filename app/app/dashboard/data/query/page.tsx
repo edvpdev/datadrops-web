@@ -1,5 +1,7 @@
-import Image from "next/image";
+'use client';
+
+import { QueryWrapper } from '@/components/dashboard/data-management/query';
 
 export default function DataQueryPage() {
-  return <h1>Data query page</h1>;
+  return <QueryWrapper />;
 }

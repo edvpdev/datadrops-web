@@ -1,13 +1,13 @@
 import { IoAnalytics } from 'react-icons/io5';
 import { IconType } from 'react-icons/lib';
 import { CgDatabase } from 'react-icons/cg';
-import { TbDeviceDesktopAnalytics } from 'react-icons/tb';
 
 export interface Route {
   icon?: IconType;
   name: string;
   path: string;
   children?: Route[];
+  isBlocked?: boolean;
 }
 
 export const ROUTES: Route[] = [
@@ -38,22 +38,27 @@ export const ROUTES: Route[] = [
       {
         name: 'Query',
         path: '/dashboard/data/query'
-      }
-    ]
-  },
-  {
-    icon: TbDeviceDesktopAnalytics,
-    name: 'Analytics',
-    path: '/dashboard/analytics/views',
-    children: [
-      {
-        name: 'Views',
-        path: '/dashboard/analytics/views'
       },
       {
-        name: 'Statistics',
-        path: '/dashboard/analytics/statistics'
+        name: 'Views',
+        path: '/dashboard/data/views'
       }
     ]
   }
+  // {
+  //   icon: TbDeviceDesktopAnalytics,
+  //   name: 'Analytics',
+  //   path: '/dashboard/analytics/views',
+  //   isBlocked: true,
+  //   children: [
+  //     {
+  //       name: 'Views',
+  //       path: '/dashboard/analytics/views'
+  //     },
+  //     {
+  //       name: 'Statistics',
+  //       path: '/dashboard/analytics/statistics'
+  //     }
+  //   ]
+  // }
 ];

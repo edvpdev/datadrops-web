@@ -23,6 +23,9 @@ model Account {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@unique([provider, providerAccountId])
 }
 
@@ -40,8 +43,10 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  status        String?
   accounts      Account[]
   sessions      Session[]
+  roles         Role[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -54,4 +59,17 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Role {
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String  @db.ObjectId
+  role               String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId])
 }

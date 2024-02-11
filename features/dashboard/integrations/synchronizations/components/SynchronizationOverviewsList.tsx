@@ -13,7 +13,7 @@ interface SynchronizationOverviewsListProps {
 const customTheme: CustomFlowbiteTheme = {
   accordion: {
     title: {
-      heading: 'flex gap-2 smth'
+      heading: 'flex gap-2'
     }
   }
 };
@@ -37,7 +37,7 @@ export default function SynchronizationsOverviewsList({
                 setOpenModal={() =>
                   syncsOvContext.openModalFn(
                     'dismissible',
-                    overview.lastSyncId || overview.currentSyncId,
+                    overview.currentSyncId || overview.lastSyncId,
                     overview.providerId,
                     overview.entityLabel
                   )

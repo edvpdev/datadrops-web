@@ -10,8 +10,6 @@ export async function getSession() {
 }
 
 export default async function getCurrentUser(): Promise<SafeUser | null> {
-  // try {
-  // console.log('in getCurrentUser');
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
@@ -30,12 +28,9 @@ export default async function getCurrentUser(): Promise<SafeUser | null> {
 
   return {
     ...currentUser,
+    status: currentUser.status || 'standard',
     createdAt: currentUser.createdAt.toISOString(),
     updatedAt: currentUser.updatedAt.toISOString(),
     emailVerified: currentUser.emailVerified?.toISOString() || null
   };
-  // } catch (error) {
-  //   console.log(error);
-  //   return null;
-  // }
 }

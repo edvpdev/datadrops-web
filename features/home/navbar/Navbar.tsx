@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useSelectedLayoutSegment } from 'next/navigation';
 import { useMediaQuery, useScroll } from '@/lib/hooks';
-import { MaxWidthWrapper } from '@/lib/components';
+import { ClientOnlyCldImage, MaxWidthWrapper } from '@/lib/components';
 
 export default function NavBar() {
   const { isMobile } = useMediaQuery();
@@ -21,35 +21,36 @@ export default function NavBar() {
       })}>
       <MaxWidthWrapper>
         <div className="flex h-14 items-center justify-between">
-          <div>
-            <Link
-              className="pr-8 text-xl font-bold normal-case sm:px-8"
-              href="/home">
-              Datadrops
-            </Link>
+          <Link href="/home">
+            <ClientOnlyCldImage
+              className="relative"
+              src="datadrops/sqq65jgwxrtxhnxljnf4"
+              alt="Datadrops"
+              width={100}
+              height={40}
+              mobileHeight={50}
+              mobileWidth={50}
+            />
+          </Link>
+          <div className="flex">
             {!isMobile && (
               <>
-                <Link
-                  className="px-4 text-lg font-light normal-case"
+                {/* <Link
+                  className="upper-case text-md/10 px-4 font-medium uppercase leading-8 text-neutral"
                   href="#features">
-                  Solutions
-                </Link>
-                <Link
-                  className="px-4 text-lg font-light normal-case"
-                  href="#pricing">
-                  Pricing
-                </Link>
-                <Link
-                  className="px-4 text-lg font-light normal-case"
-                  href="#faq">
-                  FAQ
-                </Link>
+                  Documentation
+                </Link> */}
+                {/* <Link
+                  className="upper-case text-md/10 px-4 font-medium uppercase leading-8 text-neutral"
+                  href="#features">
+                  Blog
+                </Link> */}
               </>
             )}
           </div>
 
-          <div className="flex gap-4 rounded-full">
-            <div className="btn btn-primary text-white">
+          <div className="flex">
+            <div className="btn btn-primary h-[2rem] min-h-[2rem] rounded-full text-primary-content">
               <Link href={`${APP_DOMAIN}/sign-in`}>Sign In</Link>
             </div>
           </div>

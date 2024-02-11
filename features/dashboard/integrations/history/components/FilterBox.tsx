@@ -4,7 +4,7 @@ import { CustomSelect } from '@/components/form';
 import { Label } from 'flowbite-react';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from 'redux/store';
+import { selectActiveProviders } from 'redux/slices';
 
 export interface Filters {
   provider: { value: string; label: string };
@@ -18,7 +18,7 @@ interface FilterBox {
 }
 
 const FiltersBox = ({ filters, onFiltersChange }: FilterBox) => {
-  const providers = useSelector((state: RootState) => state.userProviders.data);
+  const providers = useSelector(selectActiveProviders);
   const selectedProviderEntities = useMemo(() => {
     const filteredProviders = providers.filter(
       (prov) => prov.key === filters.provider.value

@@ -1,5 +1,6 @@
 import { IProvider, IProviderWithStatus } from '@/lib/types';
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
+import { RootState } from 'redux/store';
 
 interface ProvidersState {
   data: IProviderWithStatus[];
@@ -8,6 +9,12 @@ interface ProvidersState {
 const initialState: ProvidersState = {
   data: []
 };
+
+export const selectActiveProviders = createSelector(
+  (state: RootState) => state.userProviders.data,
+  (userProviders: IProviderWithStatus[]) =>
+    userProviders.filter((p) => p.isBlocked)
+);
 
 export const userProvidersSlice = createSlice({
   name: 'userProviders',

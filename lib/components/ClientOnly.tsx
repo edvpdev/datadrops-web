@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 
 interface ClientOnlyProps {
   children: React.ReactNode;
+  fallback?: React.ReactNode;
 }
 
 const ClientOnly: React.FC<ClientOnlyProps> = ({
-  children
+  children,
+  fallback = null
 }) => {
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -15,7 +17,7 @@ const ClientOnly: React.FC<ClientOnlyProps> = ({
     setHasMounted(true);
   }, []);
 
-  if (!hasMounted) return null;
+  if (!hasMounted) return fallback ? <>{fallback}</> : null;
 
   return <>{children}</>;
 };

@@ -5,6 +5,15 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const baseApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: () => ({}),
-  tagTypes: ['Providers', 'Synchronizations', 'Entities'],
+  tagTypes: [
+    'Providers',
+    'Synchronizations',
+    'Entities',
+    'Templates',
+    'Aggregation',
+    'Views',
+    'View',
+    'JnataQueries'
+  ],
   reducerPath: 'api'
 });

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import styles from "./bubbles.module.css";
+import styles from './bubbles.module.css';
 
 export default function Bubbles() {
   return (

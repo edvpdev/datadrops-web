@@ -2,8 +2,13 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import https from 'https';
 import {
   ICreateSynchronizationPayload,
+  IJnataQuery,
+  IJnataQueryCreatePayload,
   IProviderWithStatus,
   ISynchronization,
+  ITemplate,
+  IView,
+  IViewCreatePayload,
   SynchronizationsOverview
 } from '../types';
 import { customLog } from '@/actions/customLog.action';
@@ -57,41 +62,11 @@ axios.interceptors.response.use(
       status: error.response?.status,
       userId: error.config?.headers.id
     });
-    // const { data, status, config } = error.response as AxiosResponse;
-    // switch (status) {
-    //   case 400:
-    //     if (config.method === "get" && data.errors.hasOwnProperty("id")) {
-    //       router.navigate("/not-found");
-    //     }
-    //     if (data.errors) {
-    //       const modalStateErrors = [];
-    //       for (const key in data.errors) {
-    //         if (data.errors[key]) {
-    //           modalStateErrors.push(data.errors[key]);
-    //         }
-    //       }
-    //       throw modalStateErrors.flat();
-    //     } else {
-    //       toast.error(data);
-    //     }
-    //     break;
-    //   case 401:
-    //     toast.error("unauthorized");
-    //     break;
-    //   case 403:
-    //     toast.error("forbidden");
-    //     break;
-    //   case 404:
-    //     router.navigate("/not-found");
-    //     break;
-    //   case 500:
-    //     store.commonStore.setServerError(data);
-    //     router.navigate("/server-error");
-    //     break;
-    //   default:
-    //     break;
-    // }
-    return Promise.reject(error);
+    const { data, status, config } = error.response as AxiosResponse;
+    return Promise.reject({
+      status,
+      message: data.message
+    });
   }
 );
 
@@ -119,11 +94,29 @@ const requests = {
           }
         }
       )
+      .then(responseBody),
+  put: <T>(url: string, user: AxiosUserCredentials, body: any) =>
+    axios
+      .put<T>(
+        url,
+        {
+          ...body
+        },
+        {
+          headers: {
+            id: user.id
+          }
+        }
+      )
+      .then(responseBody),
+  del: <T>(url: string, user: AxiosUserCredentials) =>
+    axios
+      .delete<T>(url, {
+        headers: {
+          id: user.id
+        }
+      })
       .then(responseBody)
-  //   post: <T>(url: string, body: {}) =>
-  //     axios.post<T>(url, body).then(responseBody),
-  //   put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-  //   del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
 const Synchronizations = {
@@ -131,7 +124,6 @@ const Synchronizations = {
     user: AxiosUserCredentials,
     providers: string
   ) => {
-    console.log(providers);
     return requests.get<SynchronizationsOverview>(
       `/integrations/synchronizations?providers=${providers}`,
       user
@@ -146,18 +138,22 @@ const Synchronizations = {
       user,
       payload
     );
+  },
+  deleteSynchronization: (user: AxiosUserCredentials, id: string) => {
+    return requests.del<void>(`/integrations/synchronizations/${id}`, user);
   }
-
-  //   details: (id: string) => requests.get<Activity>(`/activities/${id}`),
-  //   create: (activity: Activity) => requests.post<void>("/activities", activity),
-  //   update: (activity: Activity) =>
-  //     axios.put<void>(`/activities/${activity.id}`, activity),
-  //   delete: (id: string) => axios.delete<void>(`/activities/${id}`),
 };
 
 const Providers = {
   getAllProviders: (user: AxiosUserCredentials) => {
     return requests.get<IProviderWithStatus[]>('/integrations/providers', user);
+  },
+  disconnect: (user: AxiosUserCredentials, provider: string) => {
+    return requests.post<void>(
+      `/integrations/providers/disconnect?provider=${provider}`,
+      user,
+      {}
+    );
   }
 };
 
@@ -168,15 +164,106 @@ const Entities = {
     entityLabel: string,
     limit: string
   ) => {
-    return requests.get<IProviderWithStatus[]>(
+    return requests.get<any[]>(
       `/integrations/entities/mini/${provider}/${entityLabel}?limit=${limit}`,
       user
     );
+  },
+  getTemplates: (
+    user: AxiosUserCredentials,
+    provider: string,
+    entityLabel: string
+  ) => {
+    return requests.get<ITemplate[]>(
+      `/integrations/entities/templates/${provider}/${entityLabel}`,
+      user
+    );
+  },
+  getAggregatedData: (
+    user: AxiosUserCredentials,
+    entityLabel: string,
+    templateKey: string,
+    page: string
+  ) => {
+    return requests.get<ITemplate[]>(
+      `/integrations/entities/aggregation/${entityLabel}/${templateKey}?page=${page}`,
+      user
+    );
+  },
+  deleteAllData: (user: AxiosUserCredentials, provider: string) => {
+    return requests.post<void>(
+      `/integrations/entities/delete-all-data?provider=${provider}`,
+      user,
+      {}
+    );
+  }
+};
+
+const Accounts = {
+  deleteAccount: (user: AxiosUserCredentials) => {
+    return requests.del<void>(`/accounts/delete-account`, user);
+  },
+  deleteAccountsData: (user: AxiosUserCredentials) => {
+    return requests.del<void>(`/accounts/delete-data`, user);
+  }
+};
+
+const Views = {
+  getAllViews: (
+    user: AxiosUserCredentials,
+    providerId: string,
+    entityLabel: string
+  ) => {
+    return requests.get<IView[]>(
+      `/data/views?providerId=${providerId}&entityLabel=${entityLabel}`,
+      user
+    );
+  },
+  getAggregatedViewData: (
+    user: AxiosUserCredentials,
+    viewId: string,
+    page: string
+  ) => {
+    return requests.get<any[]>(
+      `/data/views/aggregate/${viewId}?page=${page}`,
+      user
+    );
+  },
+  getAggregatedViewDataFile: (user: AxiosUserCredentials, viewId: string) => {
+    return requests.get<any[]>(`/data/views/download/${viewId}`, user);
+  },
+  createView: (user: AxiosUserCredentials, payload: IViewCreatePayload) => {
+    return requests.post<IView>(`/data/views`, user, payload);
+  },
+  updateView: (
+    user: AxiosUserCredentials,
+    viewId: string,
+    payload: IViewCreatePayload
+  ) => {
+    return requests.put<IView>(`/data/views/${viewId}`, user, payload);
+  },
+  deleteView: (user: AxiosUserCredentials, id: string) => {
+    return requests.del<string>(`/data/views/${id}`, user);
+  }
+};
+
+const JnataQueries = {
+  getAllJnataQueries: (user: AxiosUserCredentials) => {
+    return requests.get<IJnataQuery[]>(`/data/jnata-queries`, user);
+  },
+  createJnataQuery: (
+    user: AxiosUserCredentials,
+    payload: IJnataQueryCreatePayload
+  ) => {
+    return requests.post<IJnataQuery>(`/data/jnata-queries`, user, payload);
   }
 };
 
 export const agent = {
   Synchronizations,
   Providers,
-  Entities
+  Entities,
+  Accounts,
+  Views,
+  JnataQueries
 };

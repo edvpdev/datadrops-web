@@ -1,38 +1,32 @@
-import { GmailLabel, IProviderWithStatus, isGmailLabel } from '@/lib/types';
+import {
+  AggregatedResultsWithPagination,
+  GmailLabel,
+  ITemplate
+} from '@/lib/types';
 import { baseApi } from './baseApi';
-import { IEntity } from '@/lib/types';
 
 interface BaseQueryProps {
   limit: number;
 }
 
-type GetEntitiesProps = {
+interface GetEntitiesPropsOnly {
   providerId: string;
   entityLabel: string;
-} & BaseQueryProps;
+}
+
+interface GetAggregatedDataProps {
+  entryCollection: string;
+  templateKey: string;
+  page: number;
+}
+
+type GetEntitiesProps = GetEntitiesPropsOnly & BaseQueryProps;
 
 export const entitiesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getEntitiesMinified: builder.query<IEntity['data'][], GetEntitiesProps>({
+    getEntitiesMinified: builder.query<object[], GetEntitiesProps>({
       query: (props: GetEntitiesProps) =>
         `/entities/mini/${props.providerId}/${props.entityLabel}?limit=${props.limit}`,
-      // /${props.entityLabel}
-      //   async onQueryStarted(x, { queryFulfilled, dispatch }) {
-      //     const { data } = await queryFulfilled;
-      //     console.log('onCacheEntryAdded', data);
-      //     const providersInUse = data
-      //       .filter((provider) => provider.isBlocked)
-      //       .map((provider) => {
-      //         return {
-      //           key: provider.key,
-      //           title: provider.title,
-      //           description: provider.description,
-      //           _id: provider._id,
-      //           entities: [...provider.entities]
-      //         };
-      //       });
-      //     dispatch(setUserProviders(providersInUse));
-      //   },
       providesTags: (result, error, arg) =>
         result
           ? [
@@ -47,14 +41,48 @@ export const entitiesApi = baseApi.injectEndpoints({
             ]
           : // an error occurred, but we still want to refetch this query when `{ type: 'Posts', id: 'LIST' }` is invalidated
             [{ type: 'Entities', id: 'LIST' }]
+    }),
+    getTemplates: builder.query<ITemplate[], GetEntitiesPropsOnly>({
+      query: (props: GetEntitiesProps) =>
+        `/entities/templates/${props.providerId}/${props.entityLabel}`,
+      providesTags: (result, error, arg) =>
+        result
+          ? [
+              ...result.map(
+                () =>
+                  ({
+                    type: 'Templates',
+                    id: `${arg.entityLabel}_${arg.providerId}`
+                  }) as const
+              ),
+              { type: 'Templates', id: 'LIST' }
+            ]
+          : // an error occurred, but we still want to refetch this query when `{ type: 'Posts', id: 'LIST' }` is invalidated
+            [{ type: 'Templates', id: 'LIST' }]
+    }),
+    getAggregatedResults: builder.query<
+      AggregatedResultsWithPagination<any>,
+      GetAggregatedDataProps
+    >({
+      query: (props: GetAggregatedDataProps) =>
+        `/entities/aggregation/${props.entryCollection}/${props.templateKey}?page=${props.page}`,
+      providesTags: (result, error, arg) =>
+        result
+          ? [{ type: 'Aggregation', id: `${arg.templateKey}_page_${arg.page}` }]
+          : // an error occurred, but we still want to refetch this query when `{ type: 'Posts', id: 'LIST' }` is invalidated
+            [{ type: 'Aggregation', id: `${arg.templateKey}_page_${arg.page}` }]
     })
   }),
   overrideExisting: false
 });
 
-const { useGetEntitiesMinifiedQuery } = entitiesApi;
+const {
+  useGetEntitiesMinifiedQuery,
+  useGetTemplatesQuery,
+  useLazyGetAggregatedResultsQuery
+} = entitiesApi;
 
-export function useGetEntitiesQueryWithType<T = object>(
+function useGetEntitiesQueryWithType<T = object>(
   queryData: GetEntitiesProps,
   { skip = false }
 ) {
@@ -76,6 +104,12 @@ export function useGetEntitiesQueryWithType<T = object>(
     data: result.data as T[] | undefined
   };
 }
+
+export {
+  useGetEntitiesQueryWithType,
+  useGetTemplatesQuery,
+  useLazyGetAggregatedResultsQuery
+};
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints

@@ -14,6 +14,7 @@ export interface IProviderEntityDepSettings {
   disabled: boolean;
   isChecked?: boolean;
   defaultValue?: string;
+  tip?: string;
 }
 export interface IProviderEntityDependency {
   provider: string;

@@ -20,6 +20,7 @@ export interface ISynchronizationSummary {
   entitiesSynced: number;
   errMessage: string;
   jobId: number | null;
+  timeElapsed?: number;
 }
 
 export interface ISynchronizationGeneralSettings {
@@ -38,6 +39,7 @@ export interface ISynchronization {
   userId: User['id'];
   providerId: IProvider['key'];
   entityLabel: IProviderEntity['id'];
+  prevSyncId: string;
   status: 'started' | 'finished' | 'failed';
   settings: ISynchronizationSettings;
   summary: ISynchronizationSummary;
@@ -47,6 +49,7 @@ export interface ISynchronization {
 export interface ICreateSynchronizationPayload {
   providerId: IProvider['key'];
   entityLabel: IProviderEntity['id'];
+  prevSyncId: string;
   generalSettings: {
     limit?: boolean;
     overwrite: boolean;

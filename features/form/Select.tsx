@@ -24,6 +24,7 @@ export default function CustomSelect(props: Props) {
       <Select
         id={'id'}
         placeholder={'placeholder'}
+        isClearable
         name={'name'}
         options={props.options}
         // defaultValue={''}
@@ -31,7 +32,7 @@ export default function CustomSelect(props: Props) {
           if (e && e.value) {
             props.onChange(e);
           } else {
-            props.onChange(e);
+            props.onChange(DEFAULT_VALUE);
           }
         }}
         value={props.value ?? DEFAULT_VALUE}

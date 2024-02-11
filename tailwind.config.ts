@@ -18,6 +18,10 @@ const config: Config = {
       backgroundPosition: {
         'pos-0': '0% 0%',
         'pos-100': '100% 100%'
+      },
+      rotate: {
+        30: '30deg',
+        40: '40deg'
       }
     },
     colors: {
@@ -28,16 +32,43 @@ const config: Config = {
   daisyui: {
     themes: [
       {
-        mytheme: {
-          primary: '#fa46a4',
-          secondary: '#25d1ee',
-          accent: '#bd8ac6',
-          neutral: '#292a38',
-          'base-100': '#e5e7eb',
-          info: '#bae6fd',
-          success: '#6ee7b7',
-          warning: '#fef08a',
-          error: '#ef4444'
+        light: {
+          primary: '#176B87',
+          'primary-focus': '#125368',
+          'primary-content': '#ffffff',
+
+          secondary: '#86B6F6',
+          'secondary-focus': '#6494d3',
+          'secondary-content': '#ffffff',
+
+          accent: '#b3d4ff',
+          'accent-focus': '#87b8f7',
+          'accent-content': '#ffffff',
+
+          neutral: '#3b424e',
+          'neutral-focus': '#2a2e37',
+          'neutral-content': '#ffffff',
+
+          'base-100': '#F1F1F1',
+          'base-200': '#e0e0e0',
+          'base-300': '#ced3d9',
+          'base-content': '#1e2734',
+
+          info: '#6b7280',
+          success: '#0f766e',
+          warning: '#c2410c',
+          error: '#b91c1c',
+
+          '--rounded-box': '1rem',
+          '--rounded-btn': '.5rem',
+          '--rounded-badge': '1.9rem',
+
+          '--animation-btn': '.25s',
+          '--animation-input': '.2s',
+
+          '--btn-text-case': 'uppercase',
+          '--navbar-padding': '.5rem',
+          '--border-btn': '1px'
         }
       }
     ],

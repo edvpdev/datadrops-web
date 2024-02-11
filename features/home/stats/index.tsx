@@ -10,9 +10,9 @@ export default function StatsSection({ className }: { className?: string }) {
       )}>
       <MaxWidthWrapper className="grid gap-y-4 divide-x divide-gray-200 md:grid-cols-3 md:gap-y-0">
         {[
-          { name: 'Users', value: '1000+' },
-          { name: 'Emails parsed', value: '100000+' },
-          { name: 'User built APIs', value: '100+' }
+          { name: 'Providers', value: '3' },
+          { name: 'Templates', value: '18' },
+          { name: 'User built views', value: '100+' }
         ].map(({ name, value }) => (
           <div
             key={name}

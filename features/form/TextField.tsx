@@ -11,7 +11,7 @@ interface TextFieldProps {
   isError?: string;
   helpButton?: () => React.ReactNode;
   readonly: boolean;
-  value?: string;
+  value?: string | number;
 }
 
 //eslint-disable-next-line react/display-name

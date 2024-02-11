@@ -7,7 +7,6 @@ import { SafeAccount, SafeUser } from '@/lib/types';
 export async function getUserAccounts(
   user: SafeUser | null = null
 ): Promise<SafeAccount[]> {
-  // try {
   if (!user) {
     user = await getCurrentUser();
 
@@ -27,8 +26,4 @@ export async function getUserAccounts(
   }
 
   return userAccounts;
-  // } catch (error) {
-  //   console.log(error);
-  //   return [];
-  // }
 }
