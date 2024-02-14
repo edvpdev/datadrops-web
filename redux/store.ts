@@ -15,11 +15,13 @@ export const makeStore = () => {
       getDefaultMiddleware({
         serializableCheck: false
       }).concat(
-        process.env.NODE_ENV === 'development'
-          ? [baseApi.middleware, epicMiddleware, logger]
-          : [baseApi.middleware, epicMiddleware]
+        // process.env.NODE_ENV === 'development'
+        //   ? [baseApi.middleware, epicMiddleware, logger]
+        //   : [baseApi.middleware, epicMiddleware]
+        [baseApi.middleware, epicMiddleware]
       )
   });
+  console.log(process.env.NODE_ENV);
 
   epicMiddleware.run(rootEpic);
   return store;
