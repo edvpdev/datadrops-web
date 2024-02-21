@@ -11,10 +11,10 @@ import StatsSection from 'features/home/stats';
 export default function Home() {
   return (
     <>
-      <Hero className=" w-full bg-accent py-20 lg:pb-40" />
+      <Hero className="mb-10 w-full bg-accent py-10 lg:py-20 lg:pb-40" />
       <Discover className="container mx-auto my-20 flex w-full lg:mb-40" />
-      <Powerful className="container mx-auto mb-20 w-full lg:mb-40" />
-      <StatsSection className="mb-20 w-full lg:mb-40" />
+      <Powerful className="container mx-auto mb-10 w-full lg:mb-40" />
+      <StatsSection className="mb-10 w-full lg:mb-40" />
       <Roadmap className="container mx-auto mb-20 w-full lg:mb-40" />
       {/* <Integrations className="container mx-auto mb-20 flex w-full lg:mb-40" />
       <Features className="container mx-auto mb-20 w-full lg:mb-40" />

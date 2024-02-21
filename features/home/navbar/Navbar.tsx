@@ -20,7 +20,7 @@ export default function NavBar() {
           selectedLayout && !SHOW_BACKGROUND_SEGMENTS.has(selectedLayout)
       })}>
       <MaxWidthWrapper>
-        <div className="flex h-14 items-center justify-between">
+        <div className="flex h-14 items-center justify-between max-md:justify-center">
           <Link href="/home">
             <ClientOnlyCldImage
               className="relative"
@@ -29,10 +29,10 @@ export default function NavBar() {
               width={100}
               height={40}
               mobileHeight={50}
-              mobileWidth={50}
+              mobileWidth={120}
             />
           </Link>
-          <div className="flex">
+          <div className="hidden lg:flex">
             {!isMobile && (
               <>
                 {/* <Link
@@ -49,7 +49,7 @@ export default function NavBar() {
             )}
           </div>
 
-          <div className="flex">
+          <div className="hidden lg:flex">
             <div className="btn btn-primary h-[2rem] min-h-[2rem] rounded-full text-primary-content">
               <Link href={`${APP_DOMAIN}/sign-in`}>Sign In</Link>
             </div>

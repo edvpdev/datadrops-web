@@ -45,22 +45,22 @@ export default function Discover({ className }: { className?: string }) {
         <h6 className="mb-2 text-sm font-semibold uppercase text-neutral">
           Discover
         </h6>
-        <h2 className="mb-4 text-4xl font-bold uppercase text-neutral">
+        <h2 className="mb-4 text-2xl font-bold uppercase text-neutral lg:text-4xl">
           Get Started with Datadrops Today
         </h2>
-        <p className="mb-12 text-lg">
+        <p className="text-md mb-12 md:text-lg">
           Datadrops makes it easy for developers and users to connect their
           social profiles and interact with APIs just with a few clicks. Variety
           of prepared templates will remove headaches on how to start and gain
           enhanced insights into your social network data immediately.
         </p>
-        <div className="mb-8 flex w-full justify-between gap-2">
+        <div className="mb-8 flex w-full flex-col justify-between gap-2 lg:flex-row">
           <div
             id="feature-card"
             className="flex basis-1/3 flex-col items-center gap-2">
             <div
               id="images"
-              className="min-h-48 my-4 flex h-48 w-full flex-wrap items-center justify-center gap-4">
+              className="lg:min-h-48 flex h-24 w-full flex-wrap items-center justify-center gap-4 lg:my-4 lg:h-48">
               <ClientOnlyCldImage
                 className="relative h-auto"
                 src="datadrops/gmail_qb5b6q"
@@ -80,7 +80,7 @@ export default function Discover({ className }: { className?: string }) {
                 mobileWidth={50}
               />
             </div>
-            <h3 className="my-8 text-2xl font-bold text-neutral">
+            <h3 className="my-4 text-2xl font-bold text-neutral lg:my-8">
               Connect with various providers
             </h3>
             <p>
@@ -93,13 +93,13 @@ export default function Discover({ className }: { className?: string }) {
             className="flex basis-1/3 flex-col items-center gap-2">
             <div
               id="images"
-              className="min-h-48 my-4 flex h-48 w-full flex-wrap items-center justify-center gap-4">
+              className="min-h-48 my-4 hidden h-48 w-full flex-wrap items-center justify-center gap-4 lg:flex">
               <ImageModal
                 id="query_images_modal"
                 images={featuresGallery[Feature.QUERYING].images}
               />
             </div>
-            <h3 className="my-8 text-2xl font-bold text-neutral">
+            <h3 className="my-4 text-2xl font-bold text-neutral lg:my-8">
               Create Custom Data Views
             </h3>
             <p>Easily create and transform data leveraging JSONata.</p>
@@ -109,19 +109,19 @@ export default function Discover({ className }: { className?: string }) {
             className="flex basis-1/3 flex-col items-center gap-2">
             <div
               id="images"
-              className="min-h-48 my-4 flex h-48 w-full flex-wrap items-center justify-center gap-4">
+              className="min-h-48 my-4 hidden h-48 w-full flex-wrap items-center justify-center gap-4 lg:flex">
               <ImageModal
                 id="view_images_modal"
                 images={featuresGallery[Feature.VIEWS].images}
               />
             </div>
-            <h3 className="my-8 text-2xl font-bold text-neutral">
+            <h3 className="my-4 text-2xl font-bold text-neutral lg:my-8">
               Access anytime
             </h3>
             <p>Re-synchronize data and access it anytime as views.</p>
           </div>
         </div>
-        <div className="flex gap-4">
+        <div className="hidden gap-4 lg:flex">
           <button className="btn btn-primary btn-md border-0 bg-gradient-to-r from-primary to-secondary bg-size-200 bg-pos-0 transition-all duration-500 hover:bg-pos-100">
             <Link href={`${APP_DOMAIN}/sign-in`}>Get Started</Link>
           </button>

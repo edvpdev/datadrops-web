@@ -11,72 +11,76 @@ export default function Roadmap({ className }: { className?: string }) {
         <h6 className="mb-2 text-sm font-semibold uppercase text-neutral">
           Future
         </h6>
-        <h2 className="mb-4 text-4xl font-bold uppercase text-neutral">
+        <h2 className="mb-4 text-2xl font-bold uppercase text-neutral lg:text-4xl">
           Many more features to come
         </h2>
-        <p className="mb-12 text-lg">
+        <p className="text-md mb-12 lg:text-lg">
           Datadrops is currently in alpha and we will be adding many more
           features in the future.
         </p>
-        <div className="mb-8 flex w-full justify-between">
+        <div className="mb-8 flex w-full flex-col lg:flex-row lg:justify-between">
           <div
             id="feature-card"
             className="flex basis-1/3 flex-col items-center gap-2">
-            <h3 className="my-8 text-2xl font-bold text-neutral">
+            <h3 className="my-8 text-xl font-bold text-neutral lg:text-2xl">
               Integrations
             </h3>
-            <div className="mb-4">
+            <div className="mb-4 text-left">
               <div className="mb-2 flex gap-4">
                 <DropletSvg></DropletSvg>
-                <div>Granular access levels</div>
+                <div className="text-wrap">Granular access levels</div>
               </div>
               <div className="mb-2 flex gap-4">
                 <DropletSvg></DropletSvg>
-                <div>New providers</div>
+                <div className="text-wrap">New providers</div>
               </div>
               <div className="mb-2 flex gap-4">
                 <DropletSvg></DropletSvg>
-                <div>Automatic & scheduled synchronizations</div>
+                <div className="text-wrap">
+                  Automatic & scheduled synchronizations
+                </div>
               </div>
             </div>
           </div>
           <div
             id="feature-card"
             className="flex basis-1/3 flex-col items-center gap-2">
-            <h3 className="my-8 text-2xl font-bold text-neutral">
+            <h3 className="my-8 text-xl font-bold text-neutral lg:text-2xl">
               Data Management
             </h3>
-            <div className="mb-4">
+            <div className="mb-4 text-left">
               <div className="mb-2 flex gap-4">
                 <DropletSvg></DropletSvg>
-                <div>Templates marketplace</div>
+                <div className="text-wrap">Templates marketplace</div>
               </div>
               <div className="mb-2 flex gap-4">
                 <DropletSvg></DropletSvg>
-                <div>Cross entity templates</div>
+                <div className="text-wrap">Cross entity templates</div>
               </div>
               <div className="mb-2 flex gap-4">
                 <DropletSvg></DropletSvg>
-                <div>Versioning</div>
+                <div className="text-wrap">Versioning</div>
               </div>
               <div className="mb-2 flex gap-4">
                 <DropletSvg></DropletSvg>
-                <div>Sharing & access</div>
+                <div className="text-wrap">Sharing & access</div>
               </div>
             </div>
           </div>
           <div
             id="feature-card"
-            className="flex basis-1/3 flex-col items-center gap-2">
-            <h3 className="my-8 text-2xl font-bold text-neutral">Analytics</h3>
-            <div className="mb-4">
+            className="flex flex-col items-center gap-2 lg:basis-1/3">
+            <h3 className="my-8 text-xl font-bold text-neutral lg:text-2xl">
+              Analytics
+            </h3>
+            <div className="mb-4 text-left">
               <div className="mb-2 flex gap-4">
                 <DropletSvg></DropletSvg>
-                <div>APIs for views</div>
+                <div className="text-wrap">APIs for views</div>
               </div>
               <div className="mb-2 flex gap-4">
                 <DropletSvg></DropletSvg>
-                <div>Notifiers & subscriptions</div>
+                <div className="text-wrap">Notifiers & subscriptions</div>
               </div>
             </div>
           </div>

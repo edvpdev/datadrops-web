@@ -5,7 +5,7 @@ type DropletSvgProps = {
 } & React.SVGProps<SVGSVGElement>;
 
 const DropletSvg = ({ fill = '#176b87', ...props }: DropletSvgProps) => (
-  <div className="rotate-30">
+  <div className="h-max rotate-30">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={20}

@@ -12,15 +12,15 @@ export default function Powerful({ className }: { className?: string }) {
           <h6 className="mb-2 text-sm font-semibold uppercase text-neutral">
             Powerful
           </h6>
-          <h2 className="mb-4 text-4xl font-bold uppercase text-neutral">
+          <h2 className="mb-4 text-2xl font-bold uppercase text-neutral lg:text-4xl">
             Unleash the Power of Data Analysis
           </h2>
-          <p className="mb-4 text-lg">
+          <p className="text-md mb-4 lg:text-lg">
             Datadrops empowers developers and users to seamlessly connect social
             profiles, interact with APIs, and analyze data.
           </p>
           <div className="mb-4">
-            <div className="mb-2 flex gap-4">
+            <div className="mb-2 flex gap-2 lg:gap-4">
               <DropletSvg></DropletSvg>
               <div>
                 Analyze your data from biggest networks like Google, Github and
@@ -36,7 +36,7 @@ export default function Powerful({ className }: { className?: string }) {
               <div>Transform the data to your liking with JSONata</div>
             </div>
           </div>
-          <div className="flex gap-4">
+          <div className="hidden gap-4 lg:flex">
             <button className="btn btn-primary btn-md border-0 bg-gradient-to-r from-primary to-secondary bg-size-200 bg-pos-0 transition-all duration-500 hover:bg-pos-100">
               <Link href={`${APP_DOMAIN}/sign-in`}>Get Started</Link>
             </button>
