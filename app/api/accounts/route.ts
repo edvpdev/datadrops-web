@@ -10,7 +10,8 @@ export const DELETE = async (request: NextRequest) => {
     }
 
     const response = await agent.Accounts.deleteAccount({
-      id: currentUser.id!
+      id: currentUser.id!,
+      type: currentUser.status!
     });
     return NextResponse.json(response);
   } catch (error) {

@@ -18,7 +18,8 @@ export const POST = async (request: NextRequest) => {
 
     const response = await agent.Entities.deleteAllData(
       {
-        id: currentUser.id!
+        id: currentUser.id!,
+        type: currentUser.status!
       },
       providerKey
     );

@@ -3,6 +3,7 @@ import { AuthOptions, DefaultSession, TokenSet } from 'next-auth';
 import prisma from '@/lib/prismadb';
 import Google from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { IProvider } from '../types';
 import { customLog } from '@/actions/customLog.action';
 
@@ -84,6 +85,43 @@ export const PROVIDERS: Pick<IProvider, 'title' | '_id'>[] = [
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
+    CredentialsProvider({
+      id: 'credentials',
+      name: 'Domain Account',
+      async authorize(credentials, req) {
+        console.log('Credentials');
+
+        try {
+          const user = await prisma.user.findUnique({
+            where: {
+              email: 'demo1@example.com'
+            }
+          });
+          console.log(user);
+
+          if (user === null) {
+            console.log('here');
+            throw new Error('No user found');
+          }
+
+          return {
+            ...user,
+            status: 'demo'
+          };
+        } catch (e) {
+          console.log(e);
+          return null;
+        }
+      },
+      credentials: {
+        // username: {
+        //   label: 'Username',
+        //   type: 'text ',
+        //   placeholder: 'user@demo.com'
+        // }
+        // password: { label: "Password", type: "password" },
+      }
+    }),
     GitHubProvider({
       clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
@@ -115,13 +153,19 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      customLog.info('User Sign up', {
-        type: 'client',
-        subtype: 'conversion',
-        data: {
-          user
-        }
-      });
+      console.log(account);
+      console.log(user);
+      console.log(profile);
+      if (account?.provider === 'google') {
+        customLog.info('User Sign up', {
+          type: 'client',
+          subtype: 'conversion',
+          data: {
+            user
+          }
+        });
+      }
+
       await customLog.flush();
       // console.log('User first-time sign in', {
       //   accountId: account?.id,
@@ -133,7 +177,18 @@ export const authOptions: AuthOptions = {
     },
     // @ts-ignore
     async jwt({ token, user, account }) {
-      if (user && account) {
+      //  check if user is a demo user, set session expiration for week
+      if (user && account && account.provider === 'credentials') {
+        return {
+          ...token,
+          // access_token: account.access_token,
+          expires_at: new Date().getTime() + 1000 * 60 * 60 * 24,
+          // refresh_token: '',
+          // providerAccountId: account.providerAccountId,
+          status: (user as any).status || 'standard'
+        };
+      }
+      if (user && account && account.provider === 'google') {
         // console.log('User First time Sign In');
         customLog.info('User Sign In', {
           type: 'client',
@@ -166,7 +221,6 @@ export const authOptions: AuthOptions = {
             }
           }
         });
-        // create role document here
 
         // Save the access token and refresh token in the JWT on the initial login
         // console.log('Saving access token and refresh token in JWT');
@@ -189,6 +243,13 @@ export const authOptions: AuthOptions = {
       if (Date.now() < token.expires_at) {
         return token;
       } else {
+        if (token.eroor === 'RefreshAccessTokenError') {
+        }
+        console.log(token);
+        if (token.provider === 'credentials') {
+          console.log(token);
+          return token;
+        }
         // console.log('Refreshing token for user');
         // console.log(token);
         customLog.debug('Refreshing token for user', {

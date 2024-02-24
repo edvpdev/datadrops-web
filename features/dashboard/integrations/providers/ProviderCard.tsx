@@ -1,6 +1,6 @@
 'use client';
 
-import { Toasty, providerIcons } from '@/lib/components';
+import { CanUserUse, Toasty, providerIcons } from '@/lib/components';
 import { useCustomLog } from '@/lib/hooks';
 import { IProviderWithStatus } from '@/lib/types';
 import { cn } from '@/lib/utils';
@@ -42,7 +42,12 @@ function ConnectButton({
   );
 }
 
-function ManageButton({ providerID }: { providerID: string }) {
+interface ManageButtonProps {
+  providerID: string;
+  disabled?: boolean;
+}
+
+function ManageButton({ providerID, disabled = false }: ManageButtonProps) {
   const customLog = useCustomLog();
   const dispatch = useDispatch();
 
@@ -57,6 +62,7 @@ function ManageButton({ providerID }: { providerID: string }) {
         providerID
       }
     });
+    if (disabled) return;
     dispatch(
       openModal({
         message:
@@ -82,7 +88,7 @@ function ManageButton({ providerID }: { providerID: string }) {
         onCancel: () => {}
       })
     );
-  }, [customLog, providerID, dispatch, disconnect]);
+  }, [customLog, providerID, dispatch, disconnect, disabled]);
 
   const onDataDeleteHandler = useCallback(() => {
     customLog.info('Provider delete data', {
@@ -92,6 +98,7 @@ function ManageButton({ providerID }: { providerID: string }) {
         providerID
       }
     });
+    if (disabled) return;
     dispatch(
       openModal({
         message:
@@ -117,11 +124,13 @@ function ManageButton({ providerID }: { providerID: string }) {
         onCancel: () => {}
       })
     );
-  }, [customLog, providerID, dispatch, deleteAllData]);
+  }, [customLog, providerID, dispatch, deleteAllData, disabled]);
 
   return (
     <div className="dropdown">
-      <div tabIndex={0} className={cn('btn btn-secondary btn-sm')}>
+      <div
+        tabIndex={0}
+        className={cn('btn btn-secondary btn-sm', disabled && 'btn-disabled')}>
         Manage
       </div>
       <ul
@@ -156,8 +165,19 @@ export default function ProviderCard({ provider }: ProviderCardProps) {
         </h2>
         <div className="h-20">{description}</div>
         <div className="card-actions justify-end">
-          {isBlocked && <ManageButton providerID={key} />}
-          <ConnectButton isBlocked={isBlocked} providerID={key} />
+          {isBlocked && (
+            <CanUserUse roles={['pro', 'standard']}>
+              {(canUse) => <ManageButton providerID={key} disabled={!canUse} />}
+            </CanUserUse>
+          )}
+          <CanUserUse roles={['pro', 'standard']}>
+            {(canUse) => (
+              <ConnectButton
+                isBlocked={isBlocked || !canUse}
+                providerID={key}
+              />
+            )}
+          </CanUserUse>
         </div>
       </div>
     </div>

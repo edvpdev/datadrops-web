@@ -21,7 +21,6 @@ export const makeStore = () => {
         [baseApi.middleware, epicMiddleware]
       )
   });
-  console.log(process.env.NODE_ENV);
 
   epicMiddleware.run(rootEpic);
   return store;

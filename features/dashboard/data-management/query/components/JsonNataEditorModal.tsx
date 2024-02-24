@@ -2,8 +2,9 @@ import { Modal, TextInput } from 'flowbite-react';
 import { useCallback, useState } from 'react';
 import { debounce } from 'lodash';
 import toast from 'react-hot-toast';
-import { Toasty } from '@/lib/components';
+import { CanUserUse, Toasty } from '@/lib/components';
 import { useCreateJnataQueryMutation } from 'redux/apis/jnataQueriesApi';
+import { cn } from '@/lib/utils';
 
 interface JsonNataResultsModalProps {
   isOpen: boolean;
@@ -68,11 +69,18 @@ export default function JsonNataEditorModal({
         </Modal.Body>
         <Modal.Footer>
           <div className="flex w-full flex-row justify-end">
-            <button
-              className="btn btn-primary btn-sm"
-              onClick={() => saveHandler()}>
-              Save
-            </button>
+            <CanUserUse roles={['pro', 'standard']}>
+              {(canUse) => (
+                <button
+                  className={cn(
+                    'btn btn-primary btn-sm',
+                    !canUse && 'btn-disabled'
+                  )}
+                  onClick={() => saveHandler()}>
+                  Save
+                </button>
+              )}
+            </CanUserUse>
           </div>
         </Modal.Footer>
       </Modal>

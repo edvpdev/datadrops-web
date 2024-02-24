@@ -5,6 +5,7 @@ import JsonNataEditorModal from './JsonNataEditorModal';
 import { cn } from '@/lib/utils';
 import { useGetJnataQueriesQuery } from 'redux/apis/jnataQueriesApi';
 import { JNataQueriesDropdown } from '../../jsonata-queries';
+import { CanUserUse } from '@/lib/components';
 
 interface IJsonNataEditorProps {
   setJsonNataQuery: (result: null | any) => void;
@@ -69,14 +70,18 @@ export default function JsonNataEditor({
         value={localJsonNataQuery}
       />
       <div className="flex flex-shrink justify-end">
-        <button
-          className={cn(
-            'btn btn-primary btn-sm',
-            !localJsonNataQuery && 'btn-disabled'
+        <CanUserUse roles={['pro', 'standard']}>
+          {(canUse) => (
+            <button
+              className={cn(
+                'btn btn-primary btn-sm',
+                (!localJsonNataQuery || !canUse) && 'btn-disabled'
+              )}
+              onClick={() => openSaveModalHandler()}>
+              Save
+            </button>
           )}
-          onClick={() => openSaveModalHandler()}>
-          Save
-        </button>
+        </CanUserUse>
       </div>
     </>
   );

@@ -5,20 +5,25 @@ import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { useDeleteAccountMutation } from 'redux/apis/accountsApi';
 import { openModal } from 'redux/slices';
-import { Toasty } from '@/lib/components';
+import { CanUserUse, Toasty } from '@/lib/components';
 import { signOut } from 'next-auth/react';
+import { cn } from '@/lib/utils';
 
-function DeleteAccountButton() {
+interface Props {
+  disabled?: boolean;
+}
+
+function DeleteAccountButton({ disabled = false }: Props) {
   const dispatch = useDispatch();
   const [deleteAccount] = useDeleteAccountMutation();
 
   const onDeleteHandler = useCallback(() => {
+    if (disabled) return;
     dispatch(
       openModal({
         message:
           'Are you sure you want to delete your account? This action is irreversible',
         onConfirm: async () => {
-          // TODO: implement delete all data
           await deleteAccount()
             .unwrap()
             .then((res) => {
@@ -44,9 +49,14 @@ function DeleteAccountButton() {
         onCancel: () => {}
       })
     );
-  }, [dispatch, deleteAccount]);
+  }, [dispatch, deleteAccount, disabled]);
   return (
-    <button className="btn btn-error btn-sm" onClick={() => onDeleteHandler()}>
+    <button
+      className={cn(
+        'btn btn-error btn-sm',
+        disabled && 'btn-disabled cursor-not-allowed'
+      )}
+      onClick={() => onDeleteHandler()}>
       Delete Account
     </button>
   );
@@ -59,7 +69,9 @@ export default function DeleteAccountCard() {
         <h2 className="card-title">Account</h2>
         <div>Delete your account and data all together.</div>
         <div className="card-actions justify-start">
-          <DeleteAccountButton />
+          <CanUserUse roles={['pro', 'standard']}>
+            {(canUse) => <DeleteAccountButton disabled={!canUse} />}
+          </CanUserUse>
         </div>
       </div>
     </div>

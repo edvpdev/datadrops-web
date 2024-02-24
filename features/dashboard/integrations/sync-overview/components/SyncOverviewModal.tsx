@@ -10,7 +10,7 @@ import SyncOverviewSettings from './SyncOverviewModalSettings';
 import SyncOverviewDetails from './SynchronizationOverviewDetails';
 import SyncOverviewLastStatus from './SynchronizationOverviewLastStatus';
 import { FormErrors } from '@/components/form/SyncsSettingsForm';
-import { Toasty } from '@/lib/components';
+import { CanUserUse, Toasty } from '@/lib/components';
 import toast from 'react-hot-toast';
 import { RootState } from 'redux/store';
 import SyncOvContext from '../context/syncOverview.context';
@@ -113,14 +113,18 @@ const SyncOverviewModal = memo(function DefaultModal({
         </Modal.Body>
         <Modal.Footer>
           {!historyMode && (
-            <SyncButton
-              disabled={isSyncing || sync?.status === 'started'}
-              lastStatus={sync?.status || ''}
-              isSyncing={isSyncing}
-              onClick={() => {
-                syncFn(entity);
-              }}
-            />
+            <CanUserUse roles={['pro', 'standard']}>
+              {(canUse) => (
+                <SyncButton
+                  disabled={isSyncing || sync?.status === 'started' || !canUse}
+                  lastStatus={sync?.status || ''}
+                  isSyncing={isSyncing}
+                  onClick={() => {
+                    syncFn(entity);
+                  }}
+                />
+              )}
+            </CanUserUse>
           )}
         </Modal.Footer>
       </Modal>

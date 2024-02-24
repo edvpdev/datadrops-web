@@ -25,7 +25,8 @@ export const GET = async (
     if (path === 'mini') {
       let response = await agent.Entities.getEntitiesMinified(
         {
-          id: currentUser.id!
+          id: currentUser.id!,
+          type: currentUser.status!
         },
         provider,
         entityLabel,
@@ -37,7 +38,8 @@ export const GET = async (
     if (path === 'templates') {
       let response = await agent.Entities.getTemplates(
         {
-          id: currentUser.id!
+          id: currentUser.id!,
+          type: currentUser.status!
         },
         provider,
         entityLabel
@@ -50,7 +52,8 @@ export const GET = async (
       const page = searchParams.get('page') || '1';
       let response = await agent.Entities.getAggregatedData(
         {
-          id: currentUser.id!
+          id: currentUser.id!,
+          type: currentUser.status!
         },
         provider,
         entityLabel,

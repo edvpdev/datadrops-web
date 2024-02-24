@@ -15,7 +15,8 @@ export const GET = async (request: NextRequest) => {
 
     const response = await agent.Views.getAllViews(
       {
-        id: currentUser.id!
+        id: currentUser.id!,
+        type: currentUser.status!
       },
       providerId,
       entityLabel
@@ -36,7 +37,8 @@ export const POST = async (request: NextRequest) => {
 
     const response = await agent.Views.createView(
       {
-        id: currentUser.id!
+        id: currentUser.id!,
+        type: currentUser.status!
       },
       body as IViewCreatePayload
     );

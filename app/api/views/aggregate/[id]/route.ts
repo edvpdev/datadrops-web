@@ -18,7 +18,8 @@ export const GET = async (
 
     const response = await agent.Views.getAggregatedViewData(
       {
-        id: currentUser.id!
+        id: currentUser.id!,
+        type: currentUser.status!
       },
       viewId,
       page

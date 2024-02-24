@@ -23,12 +23,7 @@ if (process.env.NODE_ENV === 'development') {
 
 type AxiosUserCredentials = {
   id: string;
-};
-
-const sleep = (delay: number) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
+  type: string;
 };
 
 axios.interceptors.request.use((config) => {
@@ -77,7 +72,8 @@ const requests = {
     axios
       .get<T>(url, {
         headers: {
-          id: user.id
+          id: user.id,
+          type: user.type
         }
       })
       .then(responseBody),
@@ -90,7 +86,8 @@ const requests = {
         },
         {
           headers: {
-            id: user.id
+            id: user.id,
+            type: user.type
           }
         }
       )
@@ -104,7 +101,8 @@ const requests = {
         },
         {
           headers: {
-            id: user.id
+            id: user.id,
+            type: user.type
           }
         }
       )
@@ -113,7 +111,8 @@ const requests = {
     axios
       .delete<T>(url, {
         headers: {
-          id: user.id
+          id: user.id,
+          type: user.type
         }
       })
       .then(responseBody)

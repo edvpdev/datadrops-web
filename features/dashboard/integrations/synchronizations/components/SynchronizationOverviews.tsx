@@ -1,7 +1,6 @@
 'use client';
 
 import { SynchronizationsOverview } from '@/lib/types';
-// import SyncOverviewModal from '../../SynchronizationOverview';
 import { useCallback, useState } from 'react';
 import SynchronizationsOverviewsList from './SynchronizationOverviewsList';
 import { SyncOverviewModal, SyncOvContext } from '../../sync-overview';

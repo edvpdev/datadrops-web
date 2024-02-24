@@ -17,7 +17,8 @@ export const GET = async (request: NextRequest) => {
 
     const response = await agent.Synchronizations.getAllSynchronizationsForUser(
       {
-        id: currentUser.id!
+        id: currentUser.id!,
+        type: currentUser.status!
       },
       providers
     );
@@ -38,7 +39,8 @@ export const POST = async (request: NextRequest) => {
 
     const response = await agent.Synchronizations.runSynchronization(
       {
-        id: currentUser.id!
+        id: currentUser.id!,
+        type: currentUser.status!
       },
       body
     );

@@ -14,12 +14,17 @@ export default function ProviderButton({ provider }: ProviderButtonProps) {
     <div>
       <div
         className="btn btn-primary btn-outline"
-        onClick={() =>
+        onClick={() => {
+          if (provider._id === 'credentials') {
+            return signIn(provider._id, {
+              callbackUrl: APP_DOMAIN
+            });
+          }
           signIn(provider._id, {
             callbackUrl: APP_DOMAIN
-          })
-        }>
-        {providerIcons[provider.title]}
+          });
+        }}>
+        {providerIcons[provider.title] || null}
         {provider.title}
       </div>
     </div>

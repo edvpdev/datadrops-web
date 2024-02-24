@@ -1,5 +1,6 @@
 'use client';
 
+import { signOut, useSession } from 'next-auth/react';
 import { ReactNode, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { baseApi } from 'redux/apis/baseApi';
@@ -15,24 +16,38 @@ export default function IntegrationsWrapper({
 }) {
   const [tempState, setTempState] = useState(0);
   const activeProviders = useSelector(selectActiveProviders);
+  const { data: session, status } = useSession();
 
   const {
     data: synchronizations,
     isLoading: syncsLoading,
     isSuccess: syncsSuccess,
     isError: syncsError
-  } = useGetSynchronizationsQuery(activeProviders.map((p) => p.key).join(','));
+  } = useGetSynchronizationsQuery(activeProviders.map((p) => p.key).join(','), {
+    skip: !session?.user?.name && session?.error === 'RefreshAccessTokenError'
+  });
   const {
     data: providers,
     isLoading: providersLoading,
     isSuccess: providersSuccess,
     isError: providersError
-  } = useGetProvidersQuery();
+  } = useGetProvidersQuery(
+    {},
+    {
+      skip: !session?.user?.name && session?.error === 'RefreshAccessTokenError'
+    }
+  );
 
   useEffect(() => {
     if (tempState === 0) return;
     store.dispatch(baseApi.util.resetApiState());
   }, [tempState]);
+
+  useEffect(() => {
+    if (session?.error === 'RefreshAccessTokenError') {
+      signOut();
+    }
+  }, [session]);
 
   if (syncsLoading || providersLoading) {
     return (

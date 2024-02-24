@@ -18,7 +18,8 @@ export const POST = async (request: NextRequest) => {
 
     const response = await agent.Providers.disconnect(
       {
-        id: currentUser.id!
+        id: currentUser.id!,
+        type: currentUser.status!
       },
       providerKey
     );

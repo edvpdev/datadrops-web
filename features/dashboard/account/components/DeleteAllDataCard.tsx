@@ -1,17 +1,23 @@
 'use client';
 
-import { Toasty } from '@/lib/components';
+import { CanUserUse, Toasty } from '@/lib/components';
+import { cn } from '@/lib/utils';
 import { useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { useDeleteAccountDataMutation } from 'redux/apis/accountsApi';
 import { openModal } from 'redux/slices';
 
-function DeleteDataButton() {
+interface Props {
+  disabled?: boolean;
+}
+
+function DeleteDataButton({ disabled = false }: Props) {
   const dispatch = useDispatch();
   const [deleteAllData] = useDeleteAccountDataMutation();
 
   const onDeleteHandler = useCallback(() => {
+    if (disabled) return;
     dispatch(
       openModal({
         message:
@@ -41,9 +47,14 @@ function DeleteDataButton() {
         onCancel: () => {}
       })
     );
-  }, [dispatch, deleteAllData]);
+  }, [dispatch, deleteAllData, disabled]);
   return (
-    <button className="btn btn-error btn-sm" onClick={() => onDeleteHandler()}>
+    <button
+      className={cn(
+        'btn btn-error btn-sm',
+        disabled && 'btn-disabled cursor-not-allowed'
+      )}
+      onClick={() => onDeleteHandler()}>
       Delete all data
     </button>
   );
@@ -56,7 +67,9 @@ export default function DeleteAllDataCard() {
         <h2 className="card-title">Data</h2>
         <div>You can delete all your data. Account will be untouched.</div>
         <div className="card-actions justify-start">
-          <DeleteDataButton />
+          <CanUserUse roles={['pro', 'standard']}>
+            {(canUse) => <DeleteDataButton disabled={!canUse} />}
+          </CanUserUse>
         </div>
       </div>
     </div>

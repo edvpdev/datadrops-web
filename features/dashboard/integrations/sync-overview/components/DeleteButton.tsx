@@ -12,13 +12,14 @@ import { openModal } from 'redux/slices';
 interface DeleteButtonProps {
   syncId: string | undefined;
   className?: string;
+  disabled?: boolean;
 }
 
 const DeleteButton = memo(function DeleteButton({
   syncId,
-  className
+  className,
+  disabled = false
 }: DeleteButtonProps) {
-  const disabled = false;
   const dispatch = useDispatch();
   const [deleteSynchronization, { isLoading: isDeleting }] =
     useDeleteSynchronizationMutation();

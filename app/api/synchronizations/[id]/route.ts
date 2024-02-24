@@ -14,7 +14,8 @@ export const DELETE = async (
 
     const response = await agent.Synchronizations.deleteSynchronization(
       {
-        id: currentUser.id!
+        id: currentUser.id!,
+        type: currentUser.status!
       },
       params.id
     );

@@ -9,8 +9,9 @@ import {
 } from 'redux/apis/viewsApi';
 import { PAGINATION_LIMIT } from '../../const';
 import toast from 'react-hot-toast';
-import { PaginationWrapper, Toasty } from '@/lib/components';
+import { CanUserUse, PaginationWrapper, Toasty } from '@/lib/components';
 import ViewUpdateModal from './ViewUpdateModal';
+import { cn } from '@/lib/utils';
 
 interface ViewProps {
   selectedView: IView | undefined;
@@ -134,11 +135,18 @@ export default function View({ selectedView }: ViewProps) {
                     onClick={() => jsonDownloadHandler()}>
                     .JSON
                   </button>
-                  <button
-                    className="btn btn-success btn-sm"
-                    onClick={() => openUpdateModalHandler()}>
-                    Update
-                  </button>
+                  <CanUserUse roles={['pro', 'standard']}>
+                    {(canUse) => (
+                      <button
+                        className={cn(
+                          'btn btn-success btn-sm',
+                          !canUse && 'btn-disabled cursor-not-allowed'
+                        )}
+                        onClick={() => openUpdateModalHandler()}>
+                        Update
+                      </button>
+                    )}
+                  </CanUserUse>
                 </div>
               </div>
             </>

@@ -13,7 +13,7 @@ export const DELETE = async (
     }
 
     const response = await agent.Views.deleteView(
-      { id: currentUser.id! },
+      { id: currentUser.id!, type: currentUser.status! },
       params.id
     );
     return NextResponse.json(response);
@@ -35,7 +35,7 @@ export const PUT = async (
     const body = await request.json();
 
     const response = await agent.Views.updateView(
-      { id: currentUser.id! },
+      { id: currentUser.id!, type: currentUser.status! },
       params.id,
       body
     );

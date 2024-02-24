@@ -5,6 +5,7 @@ import { isoToDateString } from '@/lib/utils/index';
 import { isEqual } from 'lodash';
 import { memo } from 'react';
 import DeleteButton from './DeleteButton';
+import { CanUserUse } from '@/lib/components';
 
 interface OverviewLastSyncProps {
   sync: ISynchronization | undefined;
@@ -74,7 +75,15 @@ const SyncOverviewLastStatus = memo(function SyncOverviewLastStatus({
         </>
       )}
       {sync?.status !== 'started' && !historyMode && (
-        <DeleteButton className="mt-2 w-1/4" syncId={sync._id} />
+        <CanUserUse roles={['pro', 'standard']}>
+          {(canUse) => (
+            <DeleteButton
+              className="mt-2 w-1/4"
+              syncId={sync._id}
+              disabled={!canUse}
+            />
+          )}
+        </CanUserUse>
       )}
     </div>
   );

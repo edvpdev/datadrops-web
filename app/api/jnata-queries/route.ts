@@ -11,7 +11,8 @@ export const GET = async (request: NextRequest) => {
     }
 
     const response = await agent.JnataQueries.getAllJnataQueries({
-      id: currentUser.id!
+      id: currentUser.id!,
+      type: currentUser.status!
     });
     return NextResponse.json(response);
   } catch (error) {
@@ -29,7 +30,8 @@ export const POST = async (request: NextRequest) => {
 
     const response = await agent.JnataQueries.createJnataQuery(
       {
-        id: currentUser.id!
+        id: currentUser.id!,
+        type: currentUser.status!
       },
       body as IJnataQueryCreatePayload
     );

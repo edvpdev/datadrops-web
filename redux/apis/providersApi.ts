@@ -4,7 +4,7 @@ import { setUserProviders } from 'redux/slices';
 
 export const providersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getProviders: builder.query<IProviderWithStatus[], void>({
+    getProviders: builder.query<IProviderWithStatus[], {}>({
       query: () => `/providerss`,
       async onQueryStarted(x, { queryFulfilled, dispatch }) {
         const { data } = await queryFulfilled;

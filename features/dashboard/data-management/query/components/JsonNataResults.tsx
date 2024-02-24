@@ -3,6 +3,8 @@ import JsonNataResultsModal from './JsonNataResultsModal';
 import { useContext, useEffect, useState } from 'react';
 import jsonata from 'jsonata';
 import { QueryWrapperContext } from '..';
+import { cn } from '@/lib/utils';
+import { CanUserUse } from '@/lib/components';
 
 interface JsonNataResultsProps {
   jsonNataQuery: string | null;
@@ -64,11 +66,18 @@ export default function JsonNataResults({
       </div>
 
       <div className="mt-2 flex flex-shrink justify-end">
-        <button
-          className="btn btn-primary btn-sm"
-          onClick={() => openSaveModalHandler()}>
-          Save
-        </button>
+        <CanUserUse roles={['pro', 'standard']}>
+          {(canUse) => (
+            <button
+              className={cn(
+                'btn btn-primary btn-sm',
+                !canUse && 'btn-disabled'
+              )}
+              onClick={() => openSaveModalHandler()}>
+              Save
+            </button>
+          )}
+        </CanUserUse>
       </div>
     </div>
   );

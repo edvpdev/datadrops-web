@@ -28,6 +28,10 @@ export default function SignIn() {
           {PROVIDERS.map((provider) => (
             <ProviderButton key={provider._id} provider={provider} />
           ))}
+          <ProviderButton
+            key={'credentials'}
+            provider={{ title: 'Credentials', _id: 'credentials' }}
+          />
         </div>
       </div>
     );
