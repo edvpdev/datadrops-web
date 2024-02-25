@@ -36,7 +36,7 @@ export default function Hero({ className }: { className?: string }) {
             </button> */}
           </div>
         </div>
-        <div className="hidden basis-1/2 lg:block">
+        <div className="hidden self-stretch lg:block lg:basis-1/2">
           <Raindrops />
         </div>
       </div>

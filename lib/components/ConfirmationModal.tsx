@@ -26,7 +26,7 @@ export default function ConfirmationModal() {
   };
 
   return (
-    <Modal show={isOpen} size="md" onClose={() => onCloseHandler()}>
+    <Modal dismissible show={isOpen} size="md" onClose={() => onCloseHandler()}>
       <Modal.Body>
         <div className="text-center">
           {/* <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" /> */}
@@ -34,12 +34,16 @@ export default function ConfirmationModal() {
             {message}
           </h3>
           <div className="flex justify-center gap-4">
-            <Button color="failure" onClick={() => onConfirmHandler()}>
-              Confirm
-            </Button>
-            <Button color="gray" onClick={() => onCancelHandler()}>
-              Cancel
-            </Button>
+            {onConfirm && (
+              <Button color="failure" onClick={() => onConfirmHandler()}>
+                Confirm
+              </Button>
+            )}
+            {onCancel && (
+              <Button color="gray" onClick={() => onCancelHandler()}>
+                Cancel
+              </Button>
+            )}
           </div>
         </div>
       </Modal.Body>

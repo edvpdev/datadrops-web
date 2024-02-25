@@ -2,11 +2,11 @@
 
 import { signOut, useSession } from 'next-auth/react';
 import { ReactNode, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { baseApi } from 'redux/apis/baseApi';
 import { useGetProvidersQuery } from 'redux/apis/providersApi';
 import { useGetSynchronizationsQuery } from 'redux/apis/synchronizationsApi';
-import { selectActiveProviders } from 'redux/slices';
+import { openModal, selectActiveProviders } from 'redux/slices';
 import store from 'redux/store';
 
 export default function IntegrationsWrapper({
@@ -17,6 +17,7 @@ export default function IntegrationsWrapper({
   const [tempState, setTempState] = useState(0);
   const activeProviders = useSelector(selectActiveProviders);
   const { data: session, status } = useSession();
+  const dispatch = useDispatch();
 
   const {
     data: synchronizations,
@@ -47,7 +48,19 @@ export default function IntegrationsWrapper({
     if (session?.error === 'RefreshAccessTokenError') {
       signOut();
     }
-  }, [session]);
+    if (session?.user?.status === 'demo') {
+      if (localStorage.getItem('datadrops-demo')) return;
+      localStorage.setItem('datadrops-demo', 'true');
+      dispatch(
+        openModal({
+          message:
+            'You are currently in demo mode. Some features are disabled.',
+          onConfirm: null,
+          onCancel: null
+        })
+      );
+    }
+  }, [session, dispatch]);
 
   if (syncsLoading || providersLoading) {
     return (

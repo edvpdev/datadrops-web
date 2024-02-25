@@ -14,9 +14,9 @@ export default function SignIn() {
         <div className="h-full w-full basis-3/4 bg-primary pb-20 pl-20 pr-40 pt-40">
           <Raindrops fill="#fff" />
         </div>
-        <div className="items-left flex h-full w-full basis-1/4 flex-col justify-center gap-4 px-8">
+        <div className="flex h-full w-full basis-1/4 flex-col items-center justify-center gap-4 px-8">
           <ClientOnlyCldImage
-            className="relative"
+            className="relative  mb-8"
             src="datadrops/sqq65jgwxrtxhnxljnf4"
             alt="Datadrops"
             width={100}
@@ -28,9 +28,10 @@ export default function SignIn() {
           {PROVIDERS.map((provider) => (
             <ProviderButton key={provider._id} provider={provider} />
           ))}
+          <div className="divider-primary divider my-0">or as</div>
           <ProviderButton
             key={'credentials'}
-            provider={{ title: 'Credentials', _id: 'credentials' }}
+            provider={{ title: 'Demo User', _id: 'credentials' }}
           />
         </div>
       </div>
