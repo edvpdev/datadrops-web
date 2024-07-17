@@ -1,6 +1,6 @@
 const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline';
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vitals.vercel-insights.com;
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https://res.cloudinary.com;
     font-src 'self';
@@ -16,7 +16,7 @@ const nextConfig = {
     serverActions: true
   },
   images: {
-    domains: ['res.cloudinary.com', 'lh3.googleusercontent.com']
+    domains: ['res.cloudinary.com']
   },
   async headers() {
     return [
