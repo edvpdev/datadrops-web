@@ -51,7 +51,7 @@ export default function NavBar() {
 
           <div className="hidden lg:flex">
             <div className="btn btn-primary h-[2rem] min-h-[2rem] rounded-full text-primary-content">
-              <Link href={`${APP_DOMAIN}/sign-in`}>Sign In</Link>
+              <Link href={`${APP_DOMAIN}`}>Sign In</Link>
             </div>
           </div>
         </div>

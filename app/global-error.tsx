@@ -1,7 +1,5 @@
 'use client';
 
-import { useCustomLog } from '@/lib/hooks';
-
 export default function GlobalError({
   error,
   reset
@@ -9,8 +7,6 @@ export default function GlobalError({
   error: Error;
   reset: () => void;
 }) {
-  const customLog = useCustomLog();
-  customLog.debug('GlobalError', error);
   return (
     <html>
       <body>
