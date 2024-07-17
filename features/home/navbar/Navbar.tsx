@@ -21,7 +21,7 @@ export default function NavBar() {
       })}>
       <MaxWidthWrapper>
         <div className="flex h-14 items-center justify-between max-md:justify-center">
-          <Link href="/home">
+          <Link href="/">
             <ClientOnlyCldImage
               className="relative"
               src="datadrops/sqq65jgwxrtxhnxljnf4"
