@@ -1,7 +1,7 @@
 const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vitals.vercel-insights.com;
-    style-src 'self' 'unsafe-inline';
+    script-src 'self' https://vitals.vercel-insights.com;
+    style-src 'self';
     img-src 'self' blob: data: https://res.cloudinary.com;
     font-src 'self';
     object-src 'none';
